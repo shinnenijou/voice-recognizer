@@ -1,17 +1,13 @@
 import os
 import shutil
 import configparser
-import zipfile
 from urllib.parse import urlparse
 import requests
 import json
 
 import myPath
 
-NOT_COPY_LIST = [
-    ".gitignore",
-    ".gitattributes",
-]
+REPO_URL = "https://raw.githubusercontent.com/shinnenijou/voice-recognizer/main/"
 
 PROXIES = None
 if os.getenv('DEBUG', '0') == '1':
@@ -39,37 +35,39 @@ def encode_version(version: list[int]):
     return '.'.join(temp)
 
 
-def get_remote_version():
-    version = [0, 0, 0]
-    url = urlparse("https://raw.githubusercontent.com/shinnenijou/voice-recognizer-res/main/version.txt")
+def get_remote_file(remote_path:str, local_dir: str):
+    file = ''
+    url = urlparse(REPO_URL + remote_path)
     try:
         response = requests.get(url.geturl(), proxies=PROXIES)
-    except Exception as e:
-        print(str(e))
-        return version
+    except ConnectionError:
+        return file
+
+    if response.status_code == 200:
+        file = os.path.join(local_dir, url.path.split('/')[-1])
+        os.makedirs(local_dir, exist_ok=True)
+        with open(file, 'wb') as f:
+            f.write(response.content)
+
+    return file
+
+
+def get_remote_version():
+    version = [0, 0, 0]
+    update_files = {}
+    file = os.path.join(myPath.TEMP_PATH, 'version.txt')
+    if not os.path.exists(file):
+        file = get_remote_file("version.txt", myPath.TEMP_PATH)
 
     try:
-        version_info = json.loads(response.text)
-        version = parse_version(version_info.get('version', '0.0.0'))
+        with open(file, 'r', encoding='utf-8') as f:
+            version_info = json.loads(f.read())
+            version = parse_version(version_info.get('version', '0.0.0'))
+            update_files = version_info.get('update_files', {})
     except json.JSONDecodeError:
         pass
 
-    return version
-
-
-def download_release(version):
-    version = encode_version(version)
-    url = urlparse(f"https://github.com/shinnenijou/voice-recognizer-res/archive/refs/tags/v{version}.zip")
-
-    file = os.path.join(myPath.TEMP_PATH, os.path.basename(url.path))
-    try:
-        response = requests.get(url.geturl(), proxies=PROXIES)
-        with open(file, 'wb') as f:
-            f.write(response.content)
-    except Exception as e:
-        print(str(e))
-
-    return file
+    return version, update_files
 
 
 def check_update():
@@ -82,34 +80,34 @@ def check_update():
     config.read(myPath.CONFIG_FILE)
 
     local_version = parse_version(config['global'].get('version', '0.0.0'))
-    remote_version = get_remote_version()
+    remote_version, update_files = get_remote_version()
 
     if local_version < remote_version:
-        archive = download_release(remote_version)
-        if os.path.exists(archive):
-            z = zipfile.ZipFile(archive, "r")
-            if not os.path.exists(myPath.RES_PATH):
-                os.mkdir(myPath.RES_PATH)
+        complete_flag = True
+        dst_map = {}
 
-            dir_name = os.path.dirname(z.namelist()[0])
-            z.extractall(os.path.dirname(archive))
-            files = os.listdir(myPath.join(os.path.dirname(archive), dir_name))
-            for file in files:
-                if os.path.basename(file) in NOT_COPY_LIST:
-                    continue
+        for remote_file, local_dir in update_files.items():
+            temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
+            if temp_file != '':
+                abs_dst = os.path.join(myPath.ROOT_PATH, local_dir)
+                dst_map[temp_file] = abs_dst
+            else:
+                complete_flag = False
+                break
 
-                src_path = myPath.join(os.path.dirname(archive), dir_name, file)
-                dst_path = myPath.join(myPath.RES_PATH, file)
-                if os.path.isdir(src_path):
-                    shutil.copytree(src_path, dst_path, dirs_exist_ok=True)
-                else:
-                    shutil.copy(src_path, dst_path)
+        if complete_flag:
+            for src, dst in dst_map.items():
+                if not os.path.exists(dst):
+                    os.makedirs(dst, exist_ok=True)
 
-            z.close()
+                shutil.copy(src, dst)
+                os.remove(src)
 
-            config.set('global', 'version', encode_version(remote_version))
-            with open(myPath.CONFIG_FILE, 'w') as f:
-                config.write(f)
+            local_version = remote_version
 
-            os.remove(archive)
-            shutil.rmtree(myPath.join(os.path.dirname(archive), dir_name))
+    config.set('global', 'version', encode_version(local_version))
+    with open(myPath.CONFIG_FILE, 'w') as f:
+        config.write(f)
+
+
+check_update()

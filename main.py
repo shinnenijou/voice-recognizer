@@ -18,7 +18,9 @@ def main():
     waveform_queue = p_Queue(maxsize=0)
     text_queue = p_Queue(maxsize=0)
 
-    # start loading window
+    # update resource
+    check_update()
+    check_dependencies()
 
     # Init processes
     p_recognizer = None
@@ -50,5 +52,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
