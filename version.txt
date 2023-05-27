@@ -1,4 +1,7 @@
 {
-    "version": "0.0.0",
-    "dependencies": {}
+    "version": "0.1.0",
+    "dependencies": {},
+    "update_files":{
+        "version.txt": "version.txt"
+    }
 }
