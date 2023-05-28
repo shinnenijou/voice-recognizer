@@ -35,7 +35,8 @@ class CONST:
 
     # GUI
     TITLE = '音声認識'
-    WINDOW_SIZE = "600x330"
+    WINDOW_WIDTH = 600
+    WINDOW_HEIGHT = 330
     UPDATE_INTERVAL_FIELD = 'update_interval'
 
     # WorkFrame CONFIG TEXT

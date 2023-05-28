@@ -13,8 +13,15 @@ from .loadingScreen import LoadingScreen
 class MainWindow(ttk.Window):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = int((screen_width / 2) - (CONST.WINDOW_WIDTH / 2))
+        y = int((screen_height / 2) - (CONST.WINDOW_HEIGHT / 2))
+
         self.title(CONST.TITLE)
-        self.geometry(CONST.WINDOW_SIZE)
+        self.geometry(f'{CONST.WINDOW_WIDTH}x{CONST.WINDOW_HEIGHT}+{x}+{y}')
+        self.resizable(False, False)
 
         self.__thread_manager = ThreadManager()
         self.__work_tab = WorkFrame(self)

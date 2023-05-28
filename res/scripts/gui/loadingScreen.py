@@ -14,7 +14,6 @@ class LoadingScreen(tk.Tk):
         self.__img = Image.open(myPath.LOADING_IMG)
         self.__gif_iter = ImageSequence.Iterator(self.__img)
 
-
         # Geometry
         width = self.__img.width
         height = self.__img.height
@@ -32,14 +31,14 @@ class LoadingScreen(tk.Tk):
         self.__label.pack()
 
         self.show_next_frame()
-        self.after(100, self.update)
+        self.after(33, self.update)
 
     def update(self) -> None:
         if self.__stop_flag.is_set():
             self.destroy()
         else:
             self.show_next_frame()
-            self.after(100, self.update)
+            self.after(33, self.update)
 
     def show_next_frame(self):
         try:
