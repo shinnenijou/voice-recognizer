@@ -13,3 +13,4 @@ LOADING_RES_PATH = join(RES_PATH, 'loading')
 # FILE
 CONFIG_FILE = join(ROOT_PATH, 'config.ini')
 LOADING_WAV = join(LOADING_RES_PATH, 'kamome.wav')
+LOADING_IMG = join(LOADING_RES_PATH, 'loading.gif')
