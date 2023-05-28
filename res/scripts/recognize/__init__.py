@@ -28,6 +28,10 @@ class WhisperRecognizer:
 
         print("cuda: ", torch.cuda.is_available())
 
+        if os.path.exists(myPath.LOADING_WAV):
+            self.transcribe(myPath.LOADING_WAV)
+            pass
+
     def transcribe(self, _input: str):
         segments, info = self.__model.transcribe(
             _input,
