@@ -22,7 +22,7 @@ class WhisperRecognizer:
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         self.__model = WhisperModel(
-            model_size_or_path=myPath.join(myPath.MODEL_PATH, config.get_value(CONST.MODEL)),
+            model_size_or_path=os.path.join(myPath.MODEL_PATH, config.get_value(CONST.MODEL)),
             device=device
         )
 

@@ -47,7 +47,7 @@ class WorkFrame(ttk.Frame):
             if name in self.__pos_args:
                 widget.pack(**self.__pos_args[name])
 
-        if  self.__text is not None:
+        if self.__text is not None:
             self.__text.pack(**self.__text_pos)
 
     def place_children(self):
@@ -65,15 +65,20 @@ class WorkFrame(ttk.Frame):
             return
 
         texts = sys.stdout.read()
+        self.__text.text.configure(state=NORMAL)
         for text in texts:
             if text == '':
                 continue
 
-            self.__text.insert('end', text)
+            self.__text.insert(END, text)
             self.__text.see(END)
 
+        self.__text.text.configure(state=DISABLED)
+
     def clear_text(self):
+        self.__text.text.configure(state=NORMAL)
         self.__text.delete(1.0, END)
+        self.__text.text.configure(state=DISABLED)
 
     def disable_setting(self):
         for name, child in self.children.items():

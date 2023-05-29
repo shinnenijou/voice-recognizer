@@ -124,7 +124,7 @@ class MainWindow(ttk.Window):
         third_row_x = second_row_x - 50
         third_row_y = second_row_y + label_height + interval + entry_offset
         self.__work_tab.add_scrolledtext(
-            text_args={'state': DISABLED, 'autohide': True, 'height': 10, 'width': 80},
+            text_args={'state': NORMAL, 'cursor': 'arrow', 'autohide': True, 'height': 10, 'width': 80},
             text_pos={'x': third_row_x, 'y': third_row_y}
         )
 

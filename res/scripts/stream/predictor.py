@@ -20,7 +20,7 @@ class VoiceDetector(Thread):
     def __init__(self, _running_flag: Event, **kwargs):
         super().__init__()
         self.__model, model_utils = torch.hub.load(
-            repo_or_dir=myPath.join(myPath.dirname(__file__), "silero-vad"),
+            repo_or_dir=os.path.join(myPath.dirname(__file__), "silero-vad"),
             model='silero_vad',
             force_reload=True,
             source='local'
@@ -75,7 +75,7 @@ class VoiceDetector(Thread):
 
     def save_waveform(self, data: bytes):
         self.__index = self.__index + 1
-        file = myPath.join(myPath.TEMP_PATH, f'/{self.__index}.wav')
+        file = os.path.join(myPath.TEMP_PATH, f'{self.__index}.wav')
         with wave.open(file, 'wb') as wf:
             wf.setnchannels(CONST.CHANNELS)
             wf.setsampwidth(pyaudio.get_sample_size(CONST.FORMAT))
