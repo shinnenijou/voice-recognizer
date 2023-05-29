@@ -84,8 +84,12 @@ def check_update():
         complete_flag = True
         dst_map = {}
 
+        # WARNING: empty string not indicate current dir
         for remote_file, local_dir in update_files.items():
             temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
+            if local_dir == '':
+                local_dir = os.path.dirname(remote_file)
+
             if temp_file != '':
                 abs_dst = os.path.join(myPath.ROOT_PATH, local_dir)
                 dst_map[temp_file] = abs_dst
