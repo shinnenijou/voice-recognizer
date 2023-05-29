@@ -15,9 +15,12 @@ if os.getenv('DEBUG', '0') == '1':
     }
 
 
+REPO_URL = "https://raw.githubusercontent.com/shinnenijou/voice-recognizer/main/"
+
+
 def get_remote_dependencies():
     remote_dependencies = {}
-    url = urlparse("https://raw.githubusercontent.com/shinnenijou/voice-recognizer-res/main/version.txt")
+    url = urlparse(REPO_URL + 'version.txt')
 
     try:
         response = requests.get(url.geturl(), proxies=PROXIES)

@@ -53,8 +53,9 @@ def main():
     t_loading = Thread(target=loading, args=(complete_flag, ))
     loading_screen = LoadingScreen(complete_flag)
     loading_screen.overrideredirect(True)
-    loading_screen.after(200, t_loading.start)
+    t_loading.start()
     loading_screen.mainloop()
+    t_loading.join()
 
     # Main GUI Process, Threads will be managed in Main Process
     win = MainWindow(themename='minty')

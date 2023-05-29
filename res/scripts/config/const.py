@@ -2,6 +2,9 @@ import pyaudio
 
 
 class CONST:
+    # LOADING
+    LOADING_FRAMERATE = 12
+
     # RECORDER
     DETECT_THRESHOLD_FIELD = 'detect_threshold'
     MOVING_AVERAGE_WINDOW_FIELD = 'moving_average_window'

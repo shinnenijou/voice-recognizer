@@ -3,6 +3,7 @@ from threading import Event as t_Event
 from PIL import Image, ImageTk, ImageSequence
 
 import myPath
+from res.scripts.config import CONST
 
 
 class LoadingScreen(tk.Tk):
@@ -31,14 +32,14 @@ class LoadingScreen(tk.Tk):
         self.__label.pack()
 
         self.show_next_frame()
-        self.after(33, self.update)
+        self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
 
     def update(self) -> None:
         if self.__stop_flag.is_set():
             self.destroy()
         else:
             self.show_next_frame()
-            self.after(33, self.update)
+            self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
 
     def show_next_frame(self):
         try:

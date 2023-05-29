@@ -60,6 +60,9 @@ def get_remote_version():
     if not os.path.exists(file):
         file = get_remote_file("version.txt", myPath.TEMP_PATH)
 
+    if file == '':
+        return version, update_files
+
     try:
         with open(file, 'r', encoding='utf-8') as f:
             version_info = json.loads(f.read())
