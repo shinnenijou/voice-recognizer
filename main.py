@@ -57,7 +57,7 @@ def main():
     loading_screen.mainloop()
 
     # Main GUI Process, Threads will be managed in Main Process
-    win = MainWindow(themename='darkly')
+    win = MainWindow(themename='minty')
     win.init(waveform_queue, text_queue)
 
     # start main window

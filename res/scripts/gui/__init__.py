@@ -32,8 +32,8 @@ class MainWindow(ttk.Window):
 
         # Work Tab
 
-        self.__work_tab.pack(expand=True,fill='both')
-        self.__work_tab.init_widgets('grid')
+        self.__work_tab.pack(expand=True, fill='both')
+        self.__work_tab.init_widgets('place')
 
         self.mainloop()
 
@@ -75,22 +75,31 @@ class MainWindow(ttk.Window):
         )
 
     def __init_widgets(self):
-        unit_width = 10
+        # experimental
+        pivot_x = 50
+        pivot_y = 30
+        interval = 5
+        label_height = 30
+        entry_offset = - 5
 
         # WEBHOOK URL
+        first_row_x = pivot_x
+        first_row_y = pivot_y
         self.__work_tab.add_entry(
-            label_args={'text': CONST.WEBHOOK_URL_TEXT, 'justify': CENTER, 'width': unit_width},
-            label_pos={'row': 0, 'column': 0, 'pady': 10},
-            entry_args={'name': CONST.WEBHOOK_URL, 'exportselection': False, 'width': unit_width * 4},
-            entry_pos={'row': 0, 'column': 1, 'columnspan': 4, 'sticky': W}
+            label_args={'text': CONST.WEBHOOK_URL_TEXT, 'justify': CENTER, 'width': 15},
+            label_pos={'x': first_row_x, 'y': first_row_y},
+            entry_args={'name': CONST.WEBHOOK_URL, 'exportselection': False, 'width': 64},
+            entry_pos={'x': first_row_x + 98, 'y': first_row_y + entry_offset}
         )
 
         # Show Name
+        second_row_x = first_row_x + 50
+        second_row_y = first_row_y + label_height + interval
         self.__work_tab.add_entry(
-            label_args={'text': CONST.NAME_TEXT, 'justify': CENTER, 'width': unit_width},
-            label_pos={'row': 1, 'column': 0, 'pady': 10},
-            entry_args={'name': CONST.SHOW_NAME, 'exportselection': False, 'width': unit_width},
-            entry_pos={'row': 1, 'column': 1, 'sticky': W}
+            label_args={'text': CONST.NAME_TEXT, 'justify': CENTER, 'width': 15},
+            label_pos={'x': second_row_x, 'y': second_row_y},
+            entry_args={'name': CONST.SHOW_NAME, 'exportselection': False, 'width': 15},
+            entry_pos={'x': second_row_x + 48, 'y': second_row_y + entry_offset}
         )
 
         # Device List
@@ -112,20 +121,23 @@ class MainWindow(ttk.Window):
         # )
 
         # Scrolled Text
-        x_offset = 3
+        third_row_x = second_row_x - 50
+        third_row_y = second_row_y + label_height + interval + entry_offset
         self.__work_tab.add_scrolledtext(
-            text_args={'state': DISABLED,'autohide': True, 'height': 10, 'width': unit_width * 5 + x_offset},
-            text_pos={'row': 2, 'column': 0, 'columnspan': 5, 'padx': 30}
+            text_args={'state': DISABLED, 'autohide': True, 'height': 10, 'width': 80},
+            text_pos={'x': third_row_x, 'y': third_row_y}
         )
 
         # start button
+        forth_row_x = third_row_x + 210
+        forth_row_y = third_row_y + 175
         self.__work_tab.add_trans_button(
             b1_args={'text': CONST.BUTTON_START_TEXT, 'command': self.start_threads, 'name': CONST.START_BUTTON,
-                    'bootstyle': 'primary'},
-            b1_pos={'row': 3, 'column': 2, 'sticky': W},
+                    'bootstyle': 'primary', 'width': 10},
+            b1_pos={'x': forth_row_x, 'y': forth_row_y},
             b2_args={'text': CONST.BUTTON_STOP_TEXT, 'command': self.stop_threads,
-                     'bootstyle': 'danger'},
-            b2_pos={'row': 3, 'column': 2, 'sticky': W}
+                     'bootstyle': 'danger', 'width': 10},
+            b2_pos={'x': forth_row_x, 'y': forth_row_y}
         )
 
     def start_threads(self):
