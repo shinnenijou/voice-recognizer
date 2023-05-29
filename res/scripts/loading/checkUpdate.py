@@ -40,7 +40,8 @@ def get_remote_file(remote_path:str, local_dir: str):
     url = urlparse(REPO_URL + remote_path)
     try:
         response = requests.get(url.geturl(), proxies=PROXIES)
-    except ConnectionError:
+    except Exception as e:
+        print(str(e))
         return file
 
     if response.status_code == 200:
