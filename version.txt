@@ -2,7 +2,7 @@
     "version": "0.2.1",
     "dependencies": {},
     "update_files":{
-        "res/scripts/gui/__init__.py": "res/scripts/gui",
-        "res/scripts/loading/checkUpdate.py": "res/scripts/loading"
+        "res/scripts/gui/__init__.py": "",
+        "res/scripts/loading/checkUpdate.py": ""
     }
 }
