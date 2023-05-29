@@ -6,6 +6,7 @@ import requests
 import json
 
 import myPath
+from res.scripts.config import config
 
 REPO_URL = "https://raw.githubusercontent.com/shinnenijou/voice-recognizer/main/"
 
@@ -76,14 +77,6 @@ def get_remote_version():
 
 
 def check_update():
-    if not os.path.exists(myPath.CONFIG_FILE):
-        file = open(myPath.CONFIG_FILE, 'w')
-        file.write('[global]\n')
-        file.close()
-
-    config = configparser.RawConfigParser()
-    config.read(myPath.CONFIG_FILE)
-
     local_version = parse_version(config['global'].get('version', '0.0.0'))
     remote_version, update_files = get_remote_version()
 
@@ -111,8 +104,4 @@ def check_update():
             local_version = remote_version
 
     config.set('global', 'version', encode_version(local_version))
-    with open(myPath.CONFIG_FILE, 'w') as f:
-        config.write(f)
-
-
-check_update()
+    config.save()

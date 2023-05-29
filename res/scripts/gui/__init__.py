@@ -130,7 +130,7 @@ class MainWindow(ttk.Window):
 
         # start button
         forth_row_x = third_row_x + 210
-        forth_row_y = third_row_y + 175
+        forth_row_y = third_row_y + 185
         self.__work_tab.add_trans_button(
             b1_args={'text': CONST.BUTTON_START_TEXT, 'command': self.start_threads, 'name': CONST.START_BUTTON,
                     'bootstyle': 'primary', 'width': 10},
