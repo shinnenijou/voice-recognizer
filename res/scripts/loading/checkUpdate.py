@@ -91,7 +91,7 @@ def check_update():
                 local_dir = os.path.dirname(remote_file)
 
             if temp_file != '':
-                abs_dst = os.path.join(myPath.ROOT_PATH, local_dir)
+                abs_dst = os.path.abspath(os.path.join(myPath.ROOT_PATH, local_dir))
                 dst_map[temp_file] = abs_dst
             else:
                 complete_flag = False
