@@ -28,8 +28,11 @@ class LoadingScreen(tk.Tk):
         self.geometry(f'{width}x{height}+{x}+{y}')
         self.resizable(False, False)
 
-        self.__label = tk.Label(self)
-        self.__label.pack()
+        self.__image = tk.Label(self)
+        self.__image.grid(row=0, column=0)
+
+        self.__label = tk.Label(self, text="Now Loading")
+        self.__label.grid(row=0, column=0, sticky=tk.N)
 
         self.show_next_frame()
         self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
@@ -48,5 +51,5 @@ class LoadingScreen(tk.Tk):
             self.__gif_iter = ImageSequence.Iterator(self.__img)
             cur_frame = ImageTk.PhotoImage(self.__gif_iter.__next__())
 
-        self.__label.config(image=cur_frame)
-        self.__label.image = cur_frame
+        self.__image.config(image=cur_frame)
+        self.__image.image = cur_frame

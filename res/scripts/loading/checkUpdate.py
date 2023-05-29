@@ -68,6 +68,7 @@ def get_remote_version():
             version_info = json.loads(f.read())
             version = parse_version(version_info.get('version', '0.0.0'))
             update_files = version_info.get('update_files', {})
+        os.remove(file)
     except json.JSONDecodeError:
         pass
 
