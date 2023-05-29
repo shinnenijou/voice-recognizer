@@ -32,8 +32,8 @@ class MainWindow(ttk.Window):
 
         # Work Tab
 
-        self.__work_tab.pack()
-        self.__work_tab.init_widgets('pack')
+        self.__work_tab.pack(expand=True,fill='both')
+        self.__work_tab.init_widgets('grid')
 
         self.mainloop()
 
@@ -75,20 +75,22 @@ class MainWindow(ttk.Window):
         )
 
     def __init_widgets(self):
+        unit_width = 10
+
         # WEBHOOK URL
         self.__work_tab.add_entry(
-            label_args={'text': CONST.WEBHOOK_URL_TEXT, 'justify': RIGHT},
-            label_pos={},
-            entry_args={'name': CONST.WEBHOOK_URL, 'exportselection': False, 'width': 60},
-            entry_pos={}
+            label_args={'text': CONST.WEBHOOK_URL_TEXT, 'justify': CENTER, 'width': unit_width},
+            label_pos={'row': 0, 'column': 0, 'pady': 10},
+            entry_args={'name': CONST.WEBHOOK_URL, 'exportselection': False, 'width': unit_width * 4},
+            entry_pos={'row': 0, 'column': 1, 'columnspan': 4, 'sticky': W}
         )
 
         # Show Name
         self.__work_tab.add_entry(
-            label_args={'text': CONST.NAME_TEXT, 'justify': RIGHT},
-            label_pos={},
-            entry_args={'name': CONST.SHOW_NAME, 'exportselection': False, 'width': 30},
-            entry_pos={}
+            label_args={'text': CONST.NAME_TEXT, 'justify': CENTER, 'width': unit_width},
+            label_pos={'row': 1, 'column': 0, 'pady': 10},
+            entry_args={'name': CONST.SHOW_NAME, 'exportselection': False, 'width': unit_width},
+            entry_pos={'row': 1, 'column': 1, 'sticky': W}
         )
 
         # Device List
@@ -109,21 +111,21 @@ class MainWindow(ttk.Window):
         #     b2_pos={}
         # )
 
+        # Scrolled Text
+        x_offset = 3
+        self.__work_tab.add_scrolledtext(
+            text_args={'state': DISABLED,'autohide': True, 'height': 10, 'width': unit_width * 5 + x_offset},
+            text_pos={'row': 2, 'column': 0, 'columnspan': 5, 'padx': 30}
+        )
+
         # start button
         self.__work_tab.add_trans_button(
             b1_args={'text': CONST.BUTTON_START_TEXT, 'command': self.start_threads, 'name': CONST.START_BUTTON,
-                     'width': 10, 'bootstyle': 'primary'},
-            b1_pos={},
-            b2_args={'text': CONST.BUTTON_STOP_TEXT, 'command': self.stop_threads, 'bootstyle': 'danger'},
-            b2_pos={}
-        )
-
-        # Scrolled Text
-        self.__work_tab.add_scrolledtext(
-            text_args={'height': 10, 'pady': 5, 'state': DISABLED},
-            text_pos={},
-            bar_args={'bootstyle': 'round'},
-            bar_pos={}
+                    'bootstyle': 'primary'},
+            b1_pos={'row': 3, 'column': 2, 'sticky': W},
+            b2_args={'text': CONST.BUTTON_STOP_TEXT, 'command': self.stop_threads,
+                     'bootstyle': 'danger'},
+            b2_pos={'row': 3, 'column': 2, 'sticky': W}
         )
 
     def start_threads(self):

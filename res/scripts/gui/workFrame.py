@@ -3,6 +3,7 @@ import sys
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs.dialogs import Messagebox
+from ttkbootstrap.scrolled import ScrolledText
 
 from res.scripts.config import CONST, config
 
@@ -17,6 +18,7 @@ class WorkFrame(ttk.Frame):
 
         # ScrolledText
         self.__text = None
+        self.__text_pos = None
 
         # register update
         self.__update_interval = config.get_int(CONST.UPDATE_INTERVAL_FIELD)
@@ -37,15 +39,24 @@ class WorkFrame(ttk.Frame):
             if name in self.__pos_args:
                 widget.grid(**self.__pos_args[name])
 
+        if  self.__text is not None:
+            self.__text.grid(**self.__text_pos)
+
     def pack_children(self):
         for name, widget in self.children.items():
             if name in self.__pos_args:
                 widget.pack(**self.__pos_args[name])
 
+        if  self.__text is not None:
+            self.__text.pack(**self.__text_pos)
+
     def place_children(self):
         for name, widget in self.children.items():
             if name in self.__pos_args:
                 widget.place(**self.__pos_args[name])
+
+        if  self.__text is not None:
+            self.__text.place(**self.__text_pos)
 
     def __update(self) -> None:
         self.after(self.__update_interval, self.__update)
@@ -54,7 +65,6 @@ class WorkFrame(ttk.Frame):
             return
 
         texts = sys.stdout.read()
-        self.__text.configure(state=NORMAL)
         for text in texts:
             if text == '':
                 continue
@@ -62,12 +72,8 @@ class WorkFrame(ttk.Frame):
             self.__text.insert('end', text)
             self.__text.see(END)
 
-        self.__text.configure(state=DISABLED)
-
     def clear_text(self):
-        self.__text.configure(state=NORMAL)
         self.__text.delete(1.0, END)
-        self.__text.configure(state=DISABLED)
 
     def disable_setting(self):
         for name, child in self.children.items():
@@ -158,8 +164,8 @@ class WorkFrame(ttk.Frame):
         if 'name' not in b2_args:
             b2_args['name'] = '_'.join(['trans_button_2', str(len(self.children))])
 
-        button_1 = ttk.Button(self, **b1_args)
         button_2 = ttk.Button(self, **b2_args)
+        button_1 = ttk.Button(self, **b1_args)
 
         def wrapper(cmd, name_1, name_2):
             widget_1 = self.children[name_1]
@@ -181,20 +187,10 @@ class WorkFrame(ttk.Frame):
         self.__pos_args[b1_args['name']] = b1_pos
         self.__pos_args[b2_args['name']] = b2_pos
 
-    def add_scrolledtext(self, text_args: dict, text_pos: dict, bar_args: dict, bar_pos: dict):
+    def add_scrolledtext(self, text_args: dict, text_pos: dict):
         if 'name' not in text_args:
             text_args['name'] = '_'.join(['scrolledtext', str(len(self.children))])
 
-        if 'name' not in bar_args:
-            bar_args['name'] = '_'.join(['scrolledbar', str(len(self.children))])
-
         # Text frame
-        self.__text = ttk.Text(self, **text_args)
-        bar = ttk.Scrollbar(self, **bar_args)
-
-        bar.configure(command=self.__text.yview)
-        bar.configure(orient=VERTICAL)
-        self.__text.configure(yscrollcommand=bar.set)
-
-        self.__pos_args[text_args['name']] = text_pos
-        self.__pos_args[bar_args['name']] = bar_pos
+        self.__text = ScrolledText(self, **text_args)
+        self.__text_pos = text_pos
