@@ -1,8 +1,8 @@
 {
-    "version": "0.2.1",
+    "version": "0.3.0",
     "dependencies": {},
     "update_files":{
-        "res/scripts/gui/__init__.py": "",
-        "res/scripts/loading/checkUpdate.py": ""
+        "res/scripts/gui/__init__.py": "add",
+        "res/loading/loading.gif": "remove"
     }
 }
