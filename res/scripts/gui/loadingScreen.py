@@ -12,12 +12,13 @@ class LoadingScreen(tk.Tk):
         self.__stop_flag = flag
 
         # Loading Image
-        self.__img = Image.open(myPath.LOADING_IMG)
-        self.__gif_iter = ImageSequence.Iterator(self.__img)
+        img = Image.open(myPath.LOADING_IMG)
+        self.__frames = ImageSequence.all_frames(img)
+        self.__index = 0
 
         # Geometry
-        width = self.__img.width
-        height = self.__img.height
+        width = img.width
+        height = img.height
 
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -34,6 +35,7 @@ class LoadingScreen(tk.Tk):
         self.__label = tk.Label(self, text="Now Loading")
         self.__label.grid(row=0, column=0, sticky=tk.N)
 
+        img.close()
         self.show_next_frame()
         self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
 
@@ -45,11 +47,7 @@ class LoadingScreen(tk.Tk):
             self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
 
     def show_next_frame(self):
-        try:
-            cur_frame = ImageTk.PhotoImage(self.__gif_iter.__next__())
-        except StopIteration:
-            self.__gif_iter = ImageSequence.Iterator(self.__img)
-            cur_frame = ImageTk.PhotoImage(self.__gif_iter.__next__())
-
+        self.__index = (self.__index + 1) % len(self.__frames)
+        cur_frame = ImageTk.PhotoImage(self.__frames[self.__index])
         self.__image.config(image=cur_frame)
         self.__image.image = cur_frame
