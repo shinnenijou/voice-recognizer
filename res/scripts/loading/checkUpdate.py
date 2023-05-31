@@ -84,26 +84,31 @@ def check_update():
         complete_flag = True
         dst_map = {}
 
-        # WARNING: empty string not indicate current dir
-        for remote_file, local_dir in update_files.items():
-            temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
-            if local_dir == '':
-                local_dir = os.path.dirname(remote_file)
+        for remote_file, method in update_files.items():
+            temp_file = ''
 
-            if temp_file != '':
-                abs_dst = os.path.abspath(os.path.join(myPath.ROOT_PATH, local_dir))
-                dst_map[temp_file] = abs_dst
-            else:
-                complete_flag = False
-                break
+            if method == 'add':
+                temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
+
+                if temp_file == '':
+                    complete_flag = False
+                    break
+
+            dst_map[remote_file] = (method, temp_file)
 
         if complete_flag:
-            for src, dst in dst_map.items():
-                if not os.path.exists(dst):
-                    os.makedirs(dst, exist_ok=True)
+            for remote_file, op in dst_map.items():
+                dst = os.path.abspath(os.path.join(myPath.ROOT_PATH, remote_file))
 
-                shutil.copy(src, dst)
-                os.remove(src)
+                if op[0] == 'add':
+                    if not os.path.exists(dst):
+                        os.makedirs(dst[1], exist_ok=True)
+
+                    shutil.copy(op[1], dst)
+                    os.remove(op[1])
+                elif op[0] == 'remove':
+                    if os.path.exists(dst):
+                        os.remove(dst)
 
             local_version = remote_version
 
