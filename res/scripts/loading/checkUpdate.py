@@ -1,9 +1,9 @@
 import os
 import shutil
-import configparser
 from urllib.parse import urlparse
 import requests
 import json
+import subprocess
 
 import myPath
 from res.scripts.config import config
@@ -54,61 +54,120 @@ def get_remote_file(remote_path:str, local_dir: str):
     return file
 
 
-def get_remote_version():
-    version = [0, 0, 0]
-    update_files = {}
+def get_remote_version() -> list[tuple[list[int], dict]]:
+    versions = []
     file = os.path.join(myPath.TEMP_PATH, 'version.txt')
     if not os.path.exists(file):
         file = get_remote_file("version.txt", myPath.TEMP_PATH)
 
     if file == '':
-        return version, update_files
+        return versions
 
     try:
         with open(file, 'r', encoding='utf-8') as f:
-            version_info = json.loads(f.read())
-            version = parse_version(version_info.get('version', '0.0.0'))
-            update_files = version_info.get('update_files', {})
+            content = json.loads(f.read())
+            for version, version_info in content.items():
+                versions.append((parse_version(version), version_info))
+
+            versions.sort(key=lambda x: x[0])
+
         os.remove(file)
     except json.JSONDecodeError:
         pass
 
-    return version, update_files
+    return versions
+
+
+def update_files(files: dict):
+    complete_flag = True
+    dst_map = {}
+
+    for remote_file, method in files.items():
+        temp_file = ''
+
+        if method == 'add':
+            temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
+
+            if temp_file == '':
+                complete_flag = False
+                break
+
+        dst_map[remote_file] = (method, temp_file)
+
+    if complete_flag:
+        for remote_file, op in dst_map.items():
+            dst = os.path.abspath(os.path.join(myPath.ROOT_PATH, remote_file))
+
+            if op[0] == 'add':
+                if not os.path.exists(dst):
+                    os.makedirs(dst[1], exist_ok=True)
+
+                shutil.copy(op[1], dst)
+                os.remove(op[1])
+            elif op[0] == 'remove':
+                if os.path.exists(dst):
+                    os.remove(dst)
+
+        return True
+
+    return False
+
+
+def make_temp_py(module_name: str):
+    data = f"""
+try:
+    import {module_name}
+    exit(0)
+except ModuleNotFoundError:
+    exit(-1)
+"""
+    file = os.path.join(myPath.TEMP_PATH, f'import_{module_name}.py')
+    with open(file, 'w') as f:
+        f.write(data)
+
+    return file
+
+
+def is_module_available(module_name: str):
+    file = make_temp_py(module_name)
+    subp = subprocess.run(f'{myPath.PYTHON_PATH} -s {file}', shell=True)
+    os.remove(file)
+
+    return subp.returncode == 0
+
+
+def update_dependency(module, version=''):
+    subp = None
+    if not is_module_available(module):
+        if version == '':
+            subp = subprocess.run(f"{myPath.PYTHON_PATH} -s -m pip install {module}", shell=True)
+        else:
+            subp = subprocess.run(f"{myPath.PYTHON_PATH} -s -m pip install {module}=={version}", shell=True)
+
+    return subp.returncode == 0
+
+
+def update_dependencies(modules: dict):
+    for module, version in modules.items():
+        if not update_dependency(module, version):
+            return False
+
+    return True
 
 
 def check_update():
     local_version = parse_version(config['global'].get('version', '0.0.0'))
-    remote_version, update_files = get_remote_version()
+    versions = get_remote_version()
 
-    if local_version < remote_version:
-        complete_flag = True
-        dst_map = {}
+    for remote_version, version_info in versions:
+        if local_version < remote_version:
+            result = update_files(version_info.get('update_files', {}))
+            if not result:
+                break
 
-        for remote_file, method in update_files.items():
-            temp_file = ''
-
-            if method == 'add':
-                temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
-
-                if temp_file == '':
-                    complete_flag = False
-                    break
-
-            dst_map[remote_file] = (method, temp_file)
-
-        if complete_flag:
-            for remote_file, op in dst_map.items():
-                dst = os.path.abspath(os.path.join(myPath.ROOT_PATH, remote_file))
-
-                if op[0] == 'add':
-                    if not os.path.exists(dst):
-                        os.makedirs(dst[1], exist_ok=True)
-
-                    shutil.copy(op[1], dst)
-                    os.remove(op[1])
-                elif op[0] == 'remove':
-                    if os.path.exists(dst):
-                        os.remove(dst)
+            result = update_dependencies(version_info.get('dependencies', {}))
+            if not result:
+                break
 
             local_version = remote_version
 

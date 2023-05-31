@@ -7,7 +7,6 @@ from res.scripts.config import CONST, is_gui_only
 from res.scripts.managers import ThreadManager
 
 from .workFrame import WorkFrame
-from .loadingScreen import LoadingScreen
 
 
 class MainWindow(ttk.Window):

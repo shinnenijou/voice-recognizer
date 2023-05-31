@@ -3,10 +3,9 @@ from multiprocessing import Queue as p_Queue, Process, Event as p_Event
 from threading import Thread, Event as t_Event
 
 import myPath
-from res.scripts.loading import check_update, check_dependencies
+from res.scripts.loading import check_update
 from res.scripts.utils import FileLikeQueue, mkdir, remove
 from res.scripts.config import is_gui_only
-from res.scripts.gui import MainWindow, LoadingScreen
 
 
 # GLOBAL
@@ -22,7 +21,6 @@ def loading(flag: t_Event):
 
     # update resource
     check_update()
-    check_dependencies()
 
     # Init processes
     if not is_gui_only():
@@ -49,6 +47,7 @@ def main():
     mkdir(myPath.TEMP_PATH)
 
     # start loading screen
+    from res.scripts.loading import LoadingScreen
     complete_flag = t_Event()
     t_loading = Thread(target=loading, args=(complete_flag, ))
     loading_screen = LoadingScreen(complete_flag)
@@ -58,6 +57,7 @@ def main():
     t_loading.join()
 
     # Main GUI Process, Threads will be managed in Main Process
+    from res.scripts.gui import MainWindow
     win = MainWindow(themename='minty')
     win.init(waveform_queue, text_queue)
 
