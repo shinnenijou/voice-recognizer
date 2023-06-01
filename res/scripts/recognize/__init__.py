@@ -5,7 +5,7 @@ from faster_whisper import WhisperModel
 import torch
 
 import myPath
-from res.scripts.config import CONST, config
+from res.scripts.config import CONST, config, STRING
 
 
 class WhisperRecognizer:
@@ -17,12 +17,12 @@ class WhisperRecognizer:
         self.__model = None
 
     def init(self):
-        device = config.get_value(CONST.DEVICE)
+        device = config.get_value(STRING.CONFIG_DEVICE)
         if device == 'auto':
             device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         self.__model = WhisperModel(
-            model_size_or_path=os.path.join(myPath.MODEL_PATH, config.get_value(CONST.MODEL)),
+            model_size_or_path=os.path.join(myPath.MODEL_PATH, config.get_value(STRING.CONFIG_MODEL)),
             device=device
         )
 

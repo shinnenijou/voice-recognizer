@@ -4,7 +4,7 @@ from queue import Queue as t_Queue
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from res.scripts.config import CONST, is_gui_only, config
+from res.scripts.config import CONST, is_gui_only, config, STRING
 from res.scripts.managers import ThreadManager
 
 from .button import TransButton
@@ -22,7 +22,7 @@ class WorkFrame(ttk.Frame):
         self.__thread_manager = ThreadManager()
         self.add_threads(voice_queue, text_queue)
 
-        self.__setting_frame = SettingFrame(self, text=CONST.SETTING_TEXT, padding=10)
+        self.__setting_frame = SettingFrame(self, text=STRING.LABEL_SETTING, padding=10)
         self.__setting_frame.pack(fill=X, expand=YES, anchor=N, side=TOP)
         self.add_options()
 
@@ -96,28 +96,26 @@ class WorkFrame(ttk.Frame):
     def add_options(self):
         url_frame = ttk.Frame(self.__setting_frame)
         url_frame.pack(fill=X, expand=YES, pady=(0, 2.5))
-        ttk.Label(url_frame, text=CONST.WEBHOOK_URL_TEXT, width=15).pack(side=LEFT, padx=(15, 0))
-        ttk.Entry(url_frame, name=CONST.WEBHOOK_URL).pack(side=LEFT, fill=X, expand=YES, padx=5)
+        ttk.Label(url_frame, text=STRING.LABEL_WEBHOOK, width=15).pack(side=LEFT, padx=(15, 0))
+        ttk.Entry(url_frame, name=STRING.CONFIG_WEBHOOK).pack(side=LEFT, fill=X, expand=YES, padx=5)
 
         name_frame = ttk.Frame(self.__setting_frame)
         name_frame.pack(fill=X, expand=YES, pady=(2.5, 0))
-        ttk.Label(name_frame, text=CONST.NAME_TEXT, width=15).pack(side=LEFT, padx=(15, 0))
-        ttk.Entry(name_frame, name=CONST.SHOW_NAME).pack(side=LEFT, fill=X, expand=YES, padx=5)
+        ttk.Label(name_frame, text=STRING.LABEL_NAME, width=15).pack(side=LEFT, padx=(15, 0))
+        ttk.Entry(name_frame, name=STRING.CONFIG_NAME).pack(side=LEFT, fill=X, expand=YES, padx=5)
 
     def create_start_button(self):
         return TransButton(
             self,
             command1=self.start_threads,
             command2=self.stop_threads,
-            text1=CONST.BUTTON_START_TEXT,
-            text2=CONST.BUTTON_STOP_TEXT,
+            text1=STRING.BUTTON_START,
+            text2=STRING.BUTTON_STOP,
             style1='primary.TButton',
             style2='danger.TButton',
             width=10,
-            name=CONST.START_BUTTON,
             takefocus=False
         )
-
 
 class SettingFrame(ttk.Labelframe):
     def __init__(self, master, **kwargs):

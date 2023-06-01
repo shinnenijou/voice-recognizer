@@ -2,18 +2,19 @@ import pyaudio
 
 
 class CONST:
+    # GEOMETRY
+    WINDOW_WIDTH = 600
+    WINDOW_HEIGHT = 360
+    ABOUT_WIDTH = 300
+    ABOUT_HEIGHT = 300
+
     # LOADING
     LOADING_FRAMERATE = 12
-
-    # RECORDER
-    DETECT_THRESHOLD_FIELD = 'detect_threshold'
-    MOVING_AVERAGE_WINDOW_FIELD = 'moving_average_window'
 
     # RECOGNIZER
     MODEL_LIST = ('tiny', 'small', 'base', 'medium', 'large', 'large-v2')
     DEVICE_LIST = ('cuda', 'cpu')
-    LANGUAGE = 'language'
-    MODEL = 'model'
+    LANGUAGE_LIST = ('ja', 'zh')
 
     # AUDIO
     SAMPLING_RATE = 16000
@@ -21,51 +22,36 @@ class CONST:
     CHUNK_SIZE = 512
     FORMAT = pyaudio.paInt16
 
-    # WEBHOOK
-    WEBHOOK_URL = 'webhook_url'
-    WEBHOOK_URL_TEXT = 'Webhook URL'
 
-    # SHOW NAME
-    SHOW_NAME = 'show_name'
-    NAME_TEXT = '名前'
+class STRING:
+    # LABEL TEXT
+    LABEL_WEBHOOK = 'Webhook URL'
+    LABEL_NAME = '名前'
+    LABEL_STORY_TITLE = 'フェンリルちゃんについて'
+    LABEL_STORY_TEXT = 'お楽しみに'
+    LABEL_SETTING = '設定'
 
-    # DEVICE LIST
-    DEVICE = 'device'
+    # BUTTON TEXT
+    BUTTON_START = '起動'
+    BUTTON_STOP = '停止'
 
-    # BUTTON
-    SETTING_BUTTON = 'setting'
-    START_BUTTON = 'start'
+    # TITLE TEXT
+    TITLE_MAIN = '音声認識ちゃん'
+    TITLE_ABOUT = f'{TITLE_MAIN}について...'
+
+    # MENU
+    MENU_HELP = 'ヘルプ'
 
     # CONFIG FIELDS
     CONFIG_VERSION = 'version'
-
-    # GUI
-    TITLE = '音声認識'
-    WINDOW_WIDTH = 600
-    WINDOW_HEIGHT = 360
-    UPDATE_INTERVAL_FIELD = 'update_interval'
-
-    ### MENU
-    MENU_HELP = 'ヘルプ'
-    # ABOUT WIN
-    ABOUT_TITLE = f'{TITLE}について...'
-    ABOUT_WIDTH = 300
-    ABOUT_HEIGHT = 300
-    ABOUT_STORY_TITLE = 'フェンリルちゃんについて'
-    ABOUT_STORY = 'お楽しみに'
-
-    # WorkFrame CONFIG TEXT
-    DEVICE_TEXT = '使用デバイス'
-    SETTING_TEXT = '設定'
-    BUTTON_START_TEXT = '起動'
-    BUTTON_STOP_TEXT = '停止'
-    BUTTON_MODIFY_TEXT = '変更'
-    BUTTON_SAVE_TEXT = '保存'
-    SAVE_CONFIRM_TITLE = '設定の保存'
-    SAVE_CONFIRM_TEXT = '変更を保存しますか？'
-    YES = 'はい'
-    NO = 'いいえ'
-    CANCEL = 'キャンセル'
+    CONFIG_LANGUAGE = 'language'
+    CONFIG_MODEL = 'model'
+    CONFIG_DEVICE = 'device'
+    CONFIG_NAME = 'show_name'
+    CONFIG_WEBHOOK = 'webhook_url'
+    CONFIG_DETECT_THRESHOLD = 'detect_threshold'
+    CONFIG_AVERAGE_WINDOW = 'moving_average_window'
+    CONFIG_UPDATE_INTERVAL = 'update_interval'
 
     # Message TEXT
     START_RECOGNIZING = "┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n" \

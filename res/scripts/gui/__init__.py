@@ -1,7 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from res.scripts.config import CONST, config
+from res.scripts.config import CONST, config, STRING
 import myPath
 
 from .frame import WorkFrame
@@ -21,7 +21,7 @@ class MainWindow(ttk.Window):
         x = int((screen_width / 2) - (CONST.WINDOW_WIDTH / 2))
         y = int((screen_height / 2) - (CONST.WINDOW_HEIGHT / 2))
 
-        self.title(CONST.TITLE)
+        self.title(STRING.TITLE_MAIN)
         self.geometry(f'{CONST.WINDOW_WIDTH}x{CONST.WINDOW_HEIGHT}+{x}+{y}')
         self.resizable(False, False)
 
@@ -34,8 +34,8 @@ class MainWindow(ttk.Window):
         self.configure(menu=menu)
 
         help_menu = ttk.Menu(menu)
-        help_menu.add_command(label=CONST.ABOUT_TITLE, command=self.pop_about_window)
-        menu.add_cascade(label=CONST.MENU_HELP, menu=help_menu)
+        help_menu.add_command(label=STRING.TITLE_ABOUT, command=self.pop_about_window)
+        menu.add_cascade(label=STRING.MENU_HELP, menu=help_menu)
 
     def run(self):
         # override sys callback
@@ -51,7 +51,7 @@ class MainWindow(ttk.Window):
         self.destroy()
 
     def pop_about_window(self):
-        win = ttk.Toplevel(master=self, title=CONST.ABOUT_TITLE)
+        win = ttk.Toplevel(master=self, title=STRING.TITLE_ABOUT)
 
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -71,9 +71,9 @@ class MainWindow(ttk.Window):
         img.close()
 
         # Version
-        ttk.Label(about_frame, text=f'Version: {config.get_value(CONST.CONFIG_VERSION)}').pack()
+        ttk.Label(about_frame, text=f'Version: {config.get_value(STRING.CONFIG_VERSION)}').pack()
 
         # Story
-        label_frame = ttk.Labelframe(about_frame, text=CONST.ABOUT_STORY_TITLE)
+        label_frame = ttk.Labelframe(about_frame, text=STRING.LABEL_STORY_TITLE)
         label_frame.pack(fill=BOTH, expand=YES)
-        ttk.Label(label_frame, text=CONST.ABOUT_STORY).pack()
+        ttk.Label(label_frame, text=STRING.LABEL_STORY_TEXT).pack()
