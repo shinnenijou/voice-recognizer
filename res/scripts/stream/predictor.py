@@ -67,7 +67,7 @@ class VoiceDetector(Thread):
                 self.__sentence_flag = False
                 self.__average_prob.set_average(prob)
                 file = self.save_waveform(wave_data)
-                self.__dst_queue.put(file)
+                self.__dst_queue.put((file, config.get_value(STRING.CONFIG_LANGUAGE)))
                 wave_data = b''
 
             if self.__sentence_flag:
