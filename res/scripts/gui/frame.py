@@ -27,7 +27,7 @@ class WorkFrame(ttk.Frame):
         self.add_options()
 
         text_frame = ttk
-        self.__text = WorkText(self, state=NORMAL, cursor='arrow', autohide=True, height=9, takefocus=NO)
+        self.__text = WorkText(self, state=NORMAL, cursor='arrow', autohide=True, height=8, takefocus=NO)
         self.__text.pack(fill=BOTH, expand=YES, pady=10, side=TOP, anchor=N)
 
         self.__start_button = self.create_start_button()
@@ -100,9 +100,18 @@ class WorkFrame(ttk.Frame):
         ttk.Entry(url_frame, name=STRING.CONFIG_WEBHOOK).pack(side=LEFT, fill=X, expand=YES, padx=5)
 
         name_frame = ttk.Frame(self.__setting_frame)
-        name_frame.pack(fill=X, expand=YES, pady=(2.5, 0))
+        name_frame.pack(fill=X, expand=YES, pady=(2.5, 2.5))
         ttk.Label(name_frame, text=STRING.LABEL_NAME, width=15).pack(side=LEFT, padx=(15, 0))
         ttk.Entry(name_frame, name=STRING.CONFIG_NAME).pack(side=LEFT, fill=X, expand=YES, padx=5)
+
+        language_frame = ttk.Frame(self.__setting_frame)
+        language_frame.pack(fill=X, expand=YES, pady=(2.5, 0))
+        ttk.Label(language_frame, text=STRING.LABEL_LANGUAGE, width=15).pack(side=LEFT, padx=(15, 15))
+        for text, language in STRING.LANGUAGE_MAP.items():
+            button = ttk.Radiobutton(language_frame, text=text, value=language, variable=self.__setting_frame.language_var)
+            button.pack(side=LEFT, padx=(0, 15))
+            if language == config.get_value(STRING.CONFIG_LANGUAGE):
+                button.invoke()
 
     def create_start_button(self):
         return TransButton(
@@ -117,25 +126,38 @@ class WorkFrame(ttk.Frame):
             takefocus=False
         )
 
+
 class SettingFrame(ttk.Labelframe):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
+        self.language_var = ttk.StringVar()
+
     def enable_setting(self):
         for _, frame in self.children.items():
             for name, widget in frame.children.items():
-                if isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Combobox):
+                if isinstance(widget, ttk.Entry):
+                    widget.configure(state=NORMAL)
+                elif isinstance(widget, ttk.Combobox):
+                    widget.configure(state=NORMAL)
+                elif isinstance(widget, ttk.Radiobutton):
                     widget.configure(state=NORMAL)
 
     def disable_setting(self):
         for _, frame in self.children.items():
             for name, widget in frame.children.items():
-                if isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Combobox):
+                if isinstance(widget, ttk.Entry):
+                    widget.configure(state=DISABLED)
+                elif isinstance(widget, ttk.Combobox):
+                    widget.configure(state=DISABLED)
+                elif isinstance(widget, ttk.Radiobutton):
                     widget.configure(state=DISABLED)
 
     def save_setting(self):
         for name, widget in self.children.items():
             if isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Combobox):
                 config.set_value(name, widget.get())
+
+        config.set_value(STRING.CONFIG_LANGUAGE, self.language_var.get())
 
         config.save()

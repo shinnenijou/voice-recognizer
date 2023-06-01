@@ -14,7 +14,6 @@ class CONST:
     # RECOGNIZER
     MODEL_LIST = ('tiny', 'small', 'base', 'medium', 'large', 'large-v2')
     DEVICE_LIST = ('cuda', 'cpu')
-    LANGUAGE_LIST = ('ja', 'zh')
 
     # AUDIO
     SAMPLING_RATE = 16000
@@ -30,6 +29,7 @@ class STRING:
     LABEL_STORY_TITLE = 'フェンリルちゃんについて'
     LABEL_STORY_TEXT = 'お楽しみに'
     LABEL_SETTING = '設定'
+    LABEL_LANGUAGE = '認識言語'
 
     # BUTTON TEXT
     BUTTON_START = '起動'
@@ -57,3 +57,9 @@ class STRING:
     START_RECOGNIZING = "┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n" \
                       + "┃                              音声認識が開始しました。                         ┃\n" \
                       + "┗━━━━━━━━━━━━━━━━━━━━━━━━┛"
+
+    # OTHERS
+    LANGUAGE_MAP = {
+        '日本語': 'ja',
+        '中国語': 'zh'
+    }
