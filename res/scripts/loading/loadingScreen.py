@@ -37,14 +37,14 @@ class LoadingScreen(tk.Tk):
 
         img.close()
         self.show_next_frame()
-        self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
+        self.after(int(1000 / CONST.LOADING_FRAMERATE), self.__update)
 
-    def update(self) -> None:
+    def __update(self) -> None:
         if self.__stop_flag.is_set():
             self.destroy()
         else:
             self.show_next_frame()
-            self.after(int(1000 / CONST.LOADING_FRAMERATE), self.update)
+            self.after(int(1000 / CONST.LOADING_FRAMERATE), self.__update)
 
     def show_next_frame(self):
         self.__index = (self.__index + 1) % len(self.__frames)
