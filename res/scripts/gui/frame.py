@@ -60,7 +60,7 @@ class WorkFrame(ttk.Frame):
     def stop_threads(self):
         result = self.__thread_manager.stop()
         if result:
-            self.__setting_frame.disable_setting()
+            self.__setting_frame.enable_setting()
 
         return result
 
@@ -117,6 +117,7 @@ class WorkFrame(ttk.Frame):
             name=CONST.START_BUTTON,
             takefocus=False
         )
+
 
 class SettingFrame(ttk.Labelframe):
     def __init__(self, master, **kwargs):
