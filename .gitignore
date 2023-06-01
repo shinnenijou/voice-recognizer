@@ -154,3 +154,4 @@ cython_debug/
 res/model
 *.ini
 others
+.DS_Store

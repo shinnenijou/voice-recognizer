@@ -36,11 +36,23 @@ class CONST:
     SETTING_BUTTON = 'setting'
     START_BUTTON = 'start'
 
+    # CONFIG FIELDS
+    CONFIG_VERSION = 'version'
+
     # GUI
     TITLE = '音声認識'
     WINDOW_WIDTH = 600
     WINDOW_HEIGHT = 360
     UPDATE_INTERVAL_FIELD = 'update_interval'
+
+    ### MENU
+    MENU_HELP = 'ヘルプ'
+    # ABOUT WIN
+    ABOUT_TITLE = f'{TITLE}について...'
+    ABOUT_WIDTH = 300
+    ABOUT_HEIGHT = 300
+    ABOUT_STORY_TITLE = 'フェンリルちゃんについて'
+    ABOUT_STORY = 'お楽しみに'
 
     # WorkFrame CONFIG TEXT
     DEVICE_TEXT = '使用デバイス'

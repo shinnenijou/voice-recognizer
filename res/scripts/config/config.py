@@ -10,6 +10,7 @@ REQUIRE_FIELDS = {
     CONST.LANGUAGE: 'ja',
     CONST.MODEL: "large-v2",
     CONST.DEVICE: 'auto',
+    CONST.CONFIG_VERSION: '0.0.0'
 }
 
 

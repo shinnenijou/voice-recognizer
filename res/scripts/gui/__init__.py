@@ -1,11 +1,10 @@
-import tkinter as tk
-
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from res.scripts.config import CONST
+from res.scripts.config import CONST, config
+import myPath
 
-from.frame import WorkFrame
+from .frame import WorkFrame
 from .button import TransButton
 from .text import WorkText
 
@@ -31,6 +30,12 @@ class MainWindow(ttk.Window):
         self.work_frame.pack(expand=True, fill=BOTH)
 
         # Menu
+        menu = ttk.Menu(self)
+        self.configure(menu=menu)
+
+        help_menu = ttk.Menu(menu)
+        help_menu.add_command(label=CONST.ABOUT_TITLE, command=self.pop_about_window)
+        menu.add_cascade(label=CONST.MENU_HELP, menu=help_menu)
 
     def run(self):
         # override sys callback
@@ -44,3 +49,31 @@ class MainWindow(ttk.Window):
                 getattr(child, 'on_exit')()
 
         self.destroy()
+
+    def pop_about_window(self):
+        win = ttk.Toplevel(master=self, title=CONST.ABOUT_TITLE)
+
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = int((screen_width / 2) - (CONST.ABOUT_WIDTH / 2))
+        y = int((screen_height / 2) - (CONST.ABOUT_HEIGHT / 2))
+        win.geometry(f'{CONST.ABOUT_WIDTH}x{CONST.ABOUT_HEIGHT}+{x}+{y}')
+
+        about_frame = ttk.Frame(win, padding=15)
+        about_frame.pack(fill=BOTH, expand=YES)
+
+        # Logo
+        img = ttk.Image.open(myPath.LOGO_IMG)
+        photo = ttk.ImageTk.PhotoImage(img)
+        label = ttk.Label(about_frame, image=photo)
+        label.image = photo
+        label.pack()
+        img.close()
+
+        # Version
+        ttk.Label(about_frame, text=f'Version: {config.get_value(CONST.CONFIG_VERSION)}').pack()
+
+        # Story
+        label_frame = ttk.Labelframe(about_frame, text=CONST.ABOUT_STORY_TITLE)
+        label_frame.pack(fill=BOTH, expand=YES)
+        ttk.Label(label_frame, text=CONST.ABOUT_STORY).pack()

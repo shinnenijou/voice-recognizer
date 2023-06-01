@@ -8,9 +8,15 @@ TEMP_PATH = join(ROOT_PATH, '.temp')
 PYTHON_PATH = join(ENV_PATH, 'python.exe')
 MODEL_PATH = join(RES_PATH, 'model')
 SCRIPTS_PATH = join(RES_PATH, 'scripts')
-LOADING_RES_PATH = join(RES_PATH, 'loading')
+IMG_RES_PATH = join(RES_PATH, 'img')
+AUDIO_RES_PATH = join(RES_PATH, 'audio')
 
 # FILE
 CONFIG_FILE = join(ROOT_PATH, 'config.ini')
-LOADING_WAV = join(LOADING_RES_PATH, 'kamome.wav')
-LOADING_IMG = join(LOADING_RES_PATH, 'loading.gif')
+
+# AUDIO
+LOADING_WAV = join(AUDIO_RES_PATH, 'kamome.wav')
+
+# IMG
+LOADING_IMG = join(IMG_RES_PATH, 'loading.gif')
+LOGO_IMG = join(IMG_RES_PATH, 'logo.png')
