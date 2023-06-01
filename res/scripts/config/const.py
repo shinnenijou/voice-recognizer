@@ -39,11 +39,12 @@ class CONST:
     # GUI
     TITLE = '音声認識'
     WINDOW_WIDTH = 600
-    WINDOW_HEIGHT = 330
+    WINDOW_HEIGHT = 360
     UPDATE_INTERVAL_FIELD = 'update_interval'
 
     # WorkFrame CONFIG TEXT
     DEVICE_TEXT = '使用デバイス'
+    SETTING_TEXT = '設定'
     BUTTON_START_TEXT = '起動'
     BUTTON_STOP_TEXT = '停止'
     BUTTON_MODIFY_TEXT = '変更'

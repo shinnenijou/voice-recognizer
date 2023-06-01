@@ -10,7 +10,7 @@ from res.scripts.config import is_gui_only
 
 # GLOBAL
 p_recognizer = None
-waveform_queue = p_Queue(maxsize=0)
+voice_queue = p_Queue(maxsize=0)
 text_queue = p_Queue(maxsize=0)
 loading_screen = None
 
@@ -27,7 +27,7 @@ def loading(flag: t_Event):
         from res.scripts.recognize import WhisperRecognizer
         running_flag = p_Event()
 
-        recognizer = WhisperRecognizer(src_queue=waveform_queue, dst_queue=text_queue)
+        recognizer = WhisperRecognizer(src_queue=voice_queue, dst_queue=text_queue)
         p_recognizer = Process(target=recognizer.run, args=(running_flag,), name='Whisper')
 
         # Start
@@ -58,8 +58,7 @@ def main():
 
     # Main GUI Process, Threads will be managed in Main Process
     from res.scripts.gui import MainWindow
-    win = MainWindow(themename='minty')
-    win.init(waveform_queue, text_queue)
+    win = MainWindow(themename='minty', voice_queue=voice_queue, text_queue=text_queue)
 
     # start main window
     win.run()
