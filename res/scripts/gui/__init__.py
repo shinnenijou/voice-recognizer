@@ -75,5 +75,5 @@ class MainWindow(ttk.Window):
 
         # Story
         label_frame = ttk.Labelframe(about_frame, text=STRING.LABEL_STORY_TITLE)
-        label_frame.pack(fill=BOTH, expand=YES)
+        label_frame.pack(fill=BOTH, expand=YES, pady=(15, 0))
         ttk.Label(label_frame, text=STRING.LABEL_STORY_TEXT).pack()
