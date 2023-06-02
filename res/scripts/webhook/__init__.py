@@ -24,6 +24,9 @@ class WebhookSender(Thread):
         self.__running_flag = _running_flag
 
     def send(self, url: str, name: str, content: str):
+        if not url:
+            return
+
         self.__payload['content'] = content
         self.__payload['username'] = name
 
