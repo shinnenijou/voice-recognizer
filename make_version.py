@@ -9,12 +9,12 @@ IGNORE_FILES = [
     'make_version.py',
     'README.md',
     'requirements.txt',
-    'version.txt',
+    'version.json',
 ]
 
-# 更新工作流: 在主分支需要更新的版本打上tag以后更新到这里, 生成version.txt后提交即可
-LATEST_TAG = '0.1.0'
-UPDATE_ALL = True
+# 更新工作流: 在主分支需要更新的版本打上tag以后更新到这里, 生成version.json后提交即可
+LATEST_TAG = '0.0.0'
+UPDATE_ALL = False
 
 def parse_version(string: str):
     temp = []
@@ -112,15 +112,15 @@ def main():
     cur_branch = get_current_branch()
     subprocess.run('git checkout main', shell=True, stdout=subprocess.PIPE)
 
-    if not os.path.exists(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.txt'))):
-        with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.txt')), 'w') as file:
+    if not os.path.exists(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.json'))):
+        with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.json')), 'w') as file:
             file.write('{}')
 
     versions = []
-    with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.txt')), 'r') as file:
+    with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.json')), 'r') as file:
         temp = json.loads(file.read())
-        for version, version_info in temp.items():
-            versions.append((parse_version(version), version_info))
+        for version_str, version_info in temp.items():
+            versions.append((parse_version(version_str), version_info))
 
         versions.sort(key=lambda x: x[0])
 
@@ -135,11 +135,11 @@ def main():
         files_diff = get_diff(encode_version(last_version), LATEST_TAG)
 
     if len(files_diff):
-        versions.append((LATEST_TAG, {'version': LATEST_TAG, 'update_files': files_diff}))
-        with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.txt')), 'w') as file:
+        versions.append((parse_version(LATEST_TAG), {'version': LATEST_TAG, 'update_files': files_diff}))
+        with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.json')), 'w') as file:
             temp = {}
             for (version, version_info) in versions:
-                temp[version] = version_info
+                temp[encode_version(version)] = version_info
             file.write(json.dumps(temp))
 
     subprocess.run(f'git checkout {cur_branch}', shell=True, stdout=subprocess.PIPE)

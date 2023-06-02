@@ -57,9 +57,9 @@ def get_remote_file(remote_path:str):
 
 def get_remote_version() -> list[tuple[list[int], dict]]:
     versions = []
-    file = os.path.join(myPath.TEMP_PATH, 'version.txt')
+    file = os.path.join(myPath.TEMP_PATH, 'version.json')
     if not os.path.exists(file):
-        file = get_remote_file("version.txt")
+        file = get_remote_file("version.json")
 
     if file == '':
         return versions
