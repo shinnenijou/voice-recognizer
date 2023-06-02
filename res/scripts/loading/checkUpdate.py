@@ -85,7 +85,7 @@ def update_files(files: dict):
     for remote_file, method in files.items():
         temp_file = ''
 
-        if method == 'add':
+        if method == 'A' or method == 'M':
             temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
 
             if temp_file == '':
@@ -98,13 +98,13 @@ def update_files(files: dict):
         for remote_file, op in dst_map.items():
             dst = os.path.abspath(os.path.join(myPath.ROOT_PATH, remote_file))
 
-            if op[0] == 'add':
+            if op[0] == 'A' or op[0] == 'M':
                 if not os.path.exists(dst):
                     os.makedirs(dst[1], exist_ok=True)
 
                 shutil.copy(op[1], dst)
                 os.remove(op[1])
-            elif op[0] == 'remove':
+            elif op[0] == 'D':
                 if os.path.exists(dst):
                     os.remove(dst)
 
