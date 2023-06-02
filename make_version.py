@@ -2,7 +2,6 @@ import os
 import myPath
 import subprocess
 import json
-import re
 
 IGNORE_FILES = [
     '.gitattributes',
@@ -13,8 +12,9 @@ IGNORE_FILES = [
     'version.txt',
 ]
 
-LATEST_TAG = '0.2.0'
-
+# 更新工作流: 在主分支需要更新的版本打上tag以后更新到这里, 生成version.txt后提交即可
+LATEST_TAG = '0.1.0'
+UPDATE_ALL = True
 
 def parse_version(string: str):
     temp = []
@@ -129,9 +129,9 @@ def main():
         (last_version, _) = versions[-1]
 
     files_diff = {}
-    if last_version == [0, 0, 0]:
+    if UPDATE_ALL:
         files_diff = get_full_tree()
-    else:
+    elif last_version != [0, 0, 0]:
         files_diff = get_diff(encode_version(last_version), LATEST_TAG)
 
     if len(files_diff):
