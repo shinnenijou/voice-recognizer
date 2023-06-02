@@ -135,11 +135,11 @@ def main():
         files_diff = get_diff(encode_version(last_version), LATEST_TAG)
 
     if len(files_diff):
-        versions.append((last_version, {'version': LATEST_TAG, 'update_files': files_diff}))
+        versions.append((LATEST_TAG, {'version': LATEST_TAG, 'update_files': files_diff}))
         with open(os.path.abspath(os.path.join(myPath.ROOT_PATH, 'version.txt')), 'w') as file:
             temp = {}
             for (version, version_info) in versions:
-                temp[encode_version(version)] = version_info
+                temp[version] = version_info
             file.write(json.dumps(temp))
 
     subprocess.run(f'git checkout {cur_branch}', shell=True, stdout=subprocess.PIPE)
