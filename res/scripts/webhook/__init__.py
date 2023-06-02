@@ -1,15 +1,14 @@
 import requests
-import os
 from threading import Thread, Event
 from multiprocessing import Queue as p_Queue
 
 from res.scripts.config import config, STRING
 
 PROXIES = {}
-if int(os.getenv('DEBUG', 0)) == 1:
+if config.get_value(STRING.CONFIG_PROXY):
     PROXIES = {
-        'http': 'http://127.0.0.1:7890',
-        'https': 'http://127.0.0.1:7890',
+        'http': config.get_value(STRING.CONFIG_PROXY),
+        'https': config.get_value(STRING.CONFIG_PROXY),
     }
 
 

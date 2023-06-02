@@ -7,15 +7,15 @@ import subprocess
 from queue import Queue as t_Queue
 
 import myPath
-from res.scripts.config import config, ThreadCommand
+from res.scripts.config import config, ThreadCommand, STRING
 
 REPO_URL = "https://raw.githubusercontent.com/shinnenijou/voice-recognizer/main/"
 
 PROXIES = None
-if os.getenv('DEBUG', '0') == '1':
+if config.get_value(STRING.CONFIG_PROXY):
     PROXIES = {
-        'http': 'http://127.0.0.1:7890',
-        'https': 'http://127.0.0.1:7890',
+        'http': config.get_value(STRING.CONFIG_PROXY),
+        'https': config.get_value(STRING.CONFIG_PROXY),
     }
 
 

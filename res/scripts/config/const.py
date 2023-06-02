@@ -53,6 +53,7 @@ class STRING:
     CONFIG_DETECT_THRESHOLD = 'detect_threshold'
     CONFIG_AVERAGE_WINDOW = 'moving_average_window'
     CONFIG_UPDATE_INTERVAL = 'update_interval'
+    CONFIG_PROXY = 'proxy'
 
     # Message TEXT
     START_RECOGNIZING = "┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n" \
