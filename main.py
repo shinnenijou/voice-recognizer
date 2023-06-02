@@ -6,7 +6,7 @@ from queue import Queue as t_Queue
 import myPath
 from res.scripts.loading import check_update
 from res.scripts.utils import FileLikeQueue, mkdir, remove
-from res.scripts.config import is_gui_only
+from res.scripts.config import is_gui_only, ThreadCommand
 
 
 # GLOBAL
@@ -16,12 +16,13 @@ text_queue = p_Queue(maxsize=0)
 loading_screen = None
 
 
-def loading(flag: t_Event, queue: t_Queue):
+def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
     global p_recognizer
     global loading_screen
 
     # update resource
-    check_update(queue)
+    if check_update(queue):
+        is_reboot.set()
 
     # Init processes
     if not is_gui_only():
@@ -35,7 +36,7 @@ def loading(flag: t_Event, queue: t_Queue):
         p_recognizer.start()
         running_flag.wait()
 
-    flag.set()
+    is_complete.set()
 
 
 def main():
@@ -50,13 +51,21 @@ def main():
     # start loading screen
     from res.scripts.loading import LoadingScreen
     complete_flag = t_Event()
+    reboot_flag = t_Event()
     queue_loading = t_Queue()
-    t_loading = Thread(target=loading, args=(complete_flag, queue_loading, ))
+    t_loading = Thread(target=loading, args=(complete_flag, reboot_flag, queue_loading, ))
     loading_screen = LoadingScreen(complete_flag, queue_loading)
     loading_screen.overrideredirect(True)
     t_loading.start()
     loading_screen.mainloop()
     t_loading.join()
+
+    # Reboot after updating
+    if reboot_flag.is_set():
+        if not is_gui_only():
+            p_recognizer.terminate()
+
+        exit(ThreadCommand.RebootExitCode)
 
     # Main GUI Process, Threads will be managed in Main Process
     from res.scripts.gui import MainWindow

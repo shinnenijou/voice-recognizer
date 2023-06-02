@@ -163,6 +163,7 @@ def update_dependencies(modules: dict):
 def check_update(queue: t_Queue):
     local_version = parse_version(config['global'].get('version', '0.0.0'))
     versions = get_remote_version()
+    update_flag = False
 
     for remote_version, version_info in versions:
         if local_version < remote_version:
@@ -175,6 +176,9 @@ def check_update(queue: t_Queue):
                 break
 
             local_version = remote_version
+            update_flag = True
 
     config.set('global', 'version', encode_version(local_version))
     config.save()
+
+    return update_flag

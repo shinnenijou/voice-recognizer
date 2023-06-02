@@ -69,3 +69,5 @@ class STRING:
 
 class ThreadCommand:
     ShowDownloadProgress = 1
+
+    RebootExitCode = 100  # avoid 0, 1, 2 due to wellknown exit code
