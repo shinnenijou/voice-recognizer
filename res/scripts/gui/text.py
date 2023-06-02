@@ -3,7 +3,7 @@ import sys
 from ttkbootstrap.constants import *
 from ttkbootstrap.scrolled import ScrolledText
 
-from res.scripts.config import CONST, config
+from res.scripts.config import STRING, config
 
 
 class WorkText(ScrolledText):
@@ -11,7 +11,7 @@ class WorkText(ScrolledText):
         super().__init__(master, **kwargs)
 
         # register update
-        self.__update_interval = config.get_int(CONST.UPDATE_INTERVAL_FIELD)
+        self.__update_interval = config.get_int(STRING.CONFIG_UPDATE_INTERVAL)
         self.after(self.__update_interval, self.__update)
 
     def __update(self) -> None:

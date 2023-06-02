@@ -8,7 +8,7 @@ import torch
 
 import myPath
 from res.scripts import utils
-from res.scripts.config import CONST, config
+from res.scripts.config import CONST, config, STRING
 
 
 SAMPLING_RATE = 16000
@@ -32,9 +32,9 @@ class VoiceDetector(Thread):
          self.__VADIterator,
          self.__collect_chunks) = model_utils
 
-        self.__average_prob = utils.MoveAverage(config.get_int(CONST.MOVING_AVERAGE_WINDOW_FIELD))
+        self.__average_prob = utils.MoveAverage(config.get_int(STRING.CONFIG_AVERAGE_WINDOW))
         self.__sentence_flag = False
-        self.__detect_threshold = config.get_float(CONST.DETECT_THRESHOLD_FIELD)
+        self.__detect_threshold = config.get_float(STRING.CONFIG_DETECT_THRESHOLD)
 
         self.__index = 0
         self.__running_flag = _running_flag
@@ -67,7 +67,7 @@ class VoiceDetector(Thread):
                 self.__sentence_flag = False
                 self.__average_prob.set_average(prob)
                 file = self.save_waveform(wave_data)
-                self.__dst_queue.put(file)
+                self.__dst_queue.put((file, config.get_value(STRING.CONFIG_LANGUAGE)))
                 wave_data = b''
 
             if self.__sentence_flag:

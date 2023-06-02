@@ -2,7 +2,7 @@ from threading import Thread, Event
 
 import pyaudio
 
-from res.scripts.config import CONST
+from res.scripts.config import CONST, STRING
 
 
 class MicrophoneRecorder(Thread):
@@ -25,7 +25,7 @@ class MicrophoneRecorder(Thread):
 
     def run(self):
         wave_data = b''
-        print(CONST.START_RECOGNIZING)
+        print(STRING.START_RECOGNIZING)
         while self.__running_flag.is_set():
             # record from microphone
             data = self.__stream.read(CONST.CHUNK_SIZE)

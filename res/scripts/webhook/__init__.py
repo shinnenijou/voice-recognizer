@@ -3,7 +3,7 @@ import os
 from threading import Thread, Event
 from multiprocessing import Queue as p_Queue
 
-from res.scripts.config import config, CONST
+from res.scripts.config import config, STRING
 
 PROXIES = {}
 if int(os.getenv('DEBUG', 0)) == 1:
@@ -34,8 +34,8 @@ class WebhookSender(Thread):
             pass
 
     def run(self):
-        url = config.get_value(CONST.WEBHOOK_URL)
-        name = config.get_value(CONST.SHOW_NAME)
+        url = config.get_value(STRING.CONFIG_WEBHOOK)
+        name = config.get_value(STRING.CONFIG_NAME)
 
         while self.__running_flag.is_set():
             if self.__src_queue.empty():
