@@ -36,7 +36,7 @@ def encode_version(version: list[int]):
     return '.'.join(temp)
 
 
-def get_remote_file(remote_path:str, local_dir: str):
+def get_remote_file(remote_path:str):
     file = ''
     url = urlparse(REPO_URL + remote_path)
     try:
@@ -46,8 +46,8 @@ def get_remote_file(remote_path:str, local_dir: str):
         return file
 
     if response.status_code == 200:
-        file = os.path.join(local_dir, url.path.split('/')[-1])
-        os.makedirs(local_dir, exist_ok=True)
+        file = os.path.abspath(os.path.join(myPath.TEMP_PATH, remote_path))
+        os.makedirs(os.path.dirname(file), exist_ok=True)
         with open(file, 'wb') as f:
             f.write(response.content)
 
@@ -58,7 +58,7 @@ def get_remote_version() -> list[tuple[list[int], dict]]:
     versions = []
     file = os.path.join(myPath.TEMP_PATH, 'version.txt')
     if not os.path.exists(file):
-        file = get_remote_file("version.txt", myPath.TEMP_PATH)
+        file = get_remote_file("version.txt")
 
     if file == '':
         return versions
@@ -86,7 +86,7 @@ def update_files(files: dict):
         temp_file = ''
 
         if method == 'A' or method == 'M':
-            temp_file = get_remote_file(remote_file, myPath.TEMP_PATH)
+            temp_file = get_remote_file(remote_file)
 
             if temp_file == '':
                 complete_flag = False
@@ -100,7 +100,7 @@ def update_files(files: dict):
 
             if op[0] == 'A' or op[0] == 'M':
                 if not os.path.exists(dst):
-                    os.makedirs(dst[1], exist_ok=True)
+                    os.makedirs(os.path.dirname(dst), exist_ok=True)
 
                 shutil.copy(op[1], dst)
                 os.remove(op[1])
