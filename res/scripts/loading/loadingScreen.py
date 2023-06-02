@@ -1,15 +1,18 @@
 import tkinter as tk
 from threading import Event as t_Event
 from PIL import Image, ImageTk, ImageSequence
+from queue import Queue as t_Queue
 
 import myPath
-from res.scripts.config import CONST
+from res.scripts.config import CONST, STRING, ThreadCommand
 
 
 class LoadingScreen(tk.Tk):
-    def __init__(self, flag: t_Event):
+    def __init__(self, flag: t_Event, src_queue: t_Queue):
         super().__init__()
         self.__stop_flag = flag
+        self.__text_queue = src_queue
+        self.__text = tk.StringVar(value=STRING.LABEL_DOWNLOAD)
 
         # Loading Image
         img = Image.open(myPath.LOADING_IMG)
@@ -30,10 +33,13 @@ class LoadingScreen(tk.Tk):
         self.resizable(False, False)
 
         self.__image = tk.Label(self)
-        self.__image.grid(row=0, column=0)
+        self.__image.grid(row=0, column=0, rowspan=2)
 
-        self.__label = tk.Label(self, text="Now Loading")
+        self.__label = tk.Label(self, text=STRING.LABEL_UPDATE)
         self.__label.grid(row=0, column=0, sticky=tk.N)
+
+        self.__label_2 = tk.Label(self, textvariable=self.__text)
+        self.__label_2.grid(row=1, column=0, sticky=tk.N)
 
         img.close()
         self.show_next_frame()
@@ -45,9 +51,18 @@ class LoadingScreen(tk.Tk):
         else:
             self.show_next_frame()
             self.after(int(1000 / CONST.LOADING_FRAMERATE), self.__update)
+            while not self.__text_queue.empty():
+                cmd, args = self.__text_queue.get()
+                self.handle_cmd(cmd, args)
 
     def show_next_frame(self):
         self.__index = (self.__index + 1) % len(self.__frames)
         cur_frame = ImageTk.PhotoImage(self.__frames[self.__index])
         self.__image.config(image=cur_frame)
         self.__image.image = cur_frame
+
+    def handle_cmd(self, cmd: int, args: list):
+        if cmd == ThreadCommand.ShowDownloadProgress:
+            self.__text.set(f'{STRING.LABEL_DOWNLOAD}{args[0]}/{args[1]}')
+        else:
+            pass

@@ -1,6 +1,5 @@
 import pyaudio
 
-
 class CONST:
     # GEOMETRY
     WINDOW_WIDTH = 600
@@ -30,6 +29,8 @@ class STRING:
     LABEL_STORY_TEXT = 'お楽しみに'
     LABEL_SETTING = '設定'
     LABEL_LANGUAGE = '認識言語'
+    LABEL_UPDATE = 'アップデート確認中...'
+    LABEL_DOWNLOAD = 'ダウンロード中...'
 
     # BUTTON TEXT
     BUTTON_START = '起動'
@@ -63,3 +64,7 @@ class STRING:
         '日本語': 'ja',
         '中国語': 'zh'
     }
+
+
+class ThreadCommand:
+    ShowDownloadProgress = 1

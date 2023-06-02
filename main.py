@@ -1,6 +1,7 @@
 import sys
 from multiprocessing import Queue as p_Queue, Process, Event as p_Event
 from threading import Thread, Event as t_Event
+from queue import Queue as t_Queue
 
 import myPath
 from res.scripts.loading import check_update
@@ -15,12 +16,12 @@ text_queue = p_Queue(maxsize=0)
 loading_screen = None
 
 
-def loading(flag: t_Event):
+def loading(flag: t_Event, queue: t_Queue):
     global p_recognizer
     global loading_screen
 
     # update resource
-    check_update()
+    check_update(queue)
 
     # Init processes
     if not is_gui_only():
@@ -49,8 +50,9 @@ def main():
     # start loading screen
     from res.scripts.loading import LoadingScreen
     complete_flag = t_Event()
-    t_loading = Thread(target=loading, args=(complete_flag, ))
-    loading_screen = LoadingScreen(complete_flag)
+    queue_loading = t_Queue()
+    t_loading = Thread(target=loading, args=(complete_flag, queue_loading, ))
+    loading_screen = LoadingScreen(complete_flag, queue_loading)
     loading_screen.overrideredirect(True)
     t_loading.start()
     loading_screen.mainloop()

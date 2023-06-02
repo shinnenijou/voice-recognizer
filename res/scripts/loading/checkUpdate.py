@@ -4,9 +4,10 @@ from urllib.parse import urlparse
 import requests
 import json
 import subprocess
+from queue import Queue as t_Queue
 
 import myPath
-from res.scripts.config import config
+from res.scripts.config import config, ThreadCommand
 
 REPO_URL = "https://raw.githubusercontent.com/shinnenijou/voice-recognizer/main/"
 
@@ -78,10 +79,12 @@ def get_remote_version() -> list[tuple[list[int], dict]]:
     return versions
 
 
-def update_files(files: dict):
+def update_files(files: dict, queue: t_Queue):
     complete_flag = True
     dst_map = {}
 
+    i = 1
+    size = len(files)
     for remote_file, method in files.items():
         temp_file = ''
 
@@ -93,6 +96,8 @@ def update_files(files: dict):
                 break
 
         dst_map[remote_file] = (method, temp_file)
+        queue.put((ThreadCommand.ShowDownloadProgress, [i, size]))
+        i += 1
 
     if complete_flag:
         for remote_file, op in dst_map.items():
@@ -155,13 +160,13 @@ def update_dependencies(modules: dict):
     return True
 
 
-def check_update():
+def check_update(queue: t_Queue):
     local_version = parse_version(config['global'].get('version', '0.0.0'))
     versions = get_remote_version()
 
     for remote_version, version_info in versions:
         if local_version < remote_version:
-            result = update_files(version_info.get('update_files', {}))
+            result = update_files(version_info.get('update_files', {}), queue)
             if not result:
                 break
 
