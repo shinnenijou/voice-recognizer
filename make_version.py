@@ -14,8 +14,9 @@ IGNORE_FILES = [
 ]
 
 # 更新工作流: 在主分支需要更新的版本打上tag以后更新到这里, 生成version.json后提交即可
-LATEST_TAG = '0.1.1'
+LATEST_TAG = '0.2.0'
 UPDATE_ALL = False
+
 
 def parse_version(string: str):
     temp = []
@@ -91,7 +92,8 @@ def get_diff(from_tag, to_tag):
         output = subp.stdout.decode(encoding='utf-8')
         diff = parse_git_commit(output)
         for (method, file) in diff:
-            gross_diff[file] = method
+            if os.path.basename(file) not in IGNORE_FILES:
+                gross_diff[file] = method
 
     return gross_diff
 

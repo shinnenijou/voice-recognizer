@@ -41,11 +41,18 @@
   "0.1.1": {
     "version": "0.1.1",
     "update_files": {
-      "make_version.py": "M",
-      "version.json": "M",
       "main.py": "M",
       "res/scripts/config/const.py": "M",
       "res/scripts/loading/checkUpdate.py": "M"
+    }
+  },
+  "0.2.0": {
+    "version": "0.2.0",
+    "update_files": {
+      "res/scripts/config/const.py": "M",
+      "res/scripts/gui/__init__.py": "M",
+      "res/scripts/gui/frame.py": "M",
+      "res/scripts/gui/window.py": "A"
     }
   }
 }
