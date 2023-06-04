@@ -12,7 +12,7 @@ class CONST:
 
     # RECOGNIZER
     MODEL_LIST = ('tiny', 'small', 'base', 'medium', 'large', 'large-v2')
-    DEVICE_LIST = ('cuda', 'cpu')
+    DEVICE_LIST = ('cuda', 'cpu', 'auto')
 
     # AUDIO
     SAMPLING_RATE = 16000
@@ -31,6 +31,14 @@ class STRING:
     LABEL_LANGUAGE = '認識言語'
     LABEL_UPDATE = 'アップデート確認中...'
     LABEL_DOWNLOAD = 'ダウンロード中...'
+    LABEL_PROXY = 'プロキシ'
+    LABEL_MODEL = '認識モデル'
+    LABEL_SAVE = '保存'
+    LABEL_CANCEL = 'キャンセル'
+    LABEL_YES = 'はい'
+    LABEL_NO = 'いいえ'
+    LABEL_MODIFY_MARK = '*'
+    LABEL_DEVICE = '使用デバイス'
 
     # BUTTON TEXT
     BUTTON_START = '起動'
@@ -39,9 +47,11 @@ class STRING:
     # TITLE TEXT
     TITLE_MAIN = '音声認識ちゃん'
     TITLE_ABOUT = f'{TITLE_MAIN}について...'
+    TITLE_SETTING = '詳細設定'
 
     # MENU
     MENU_HELP = 'ヘルプ'
+    MENU_OPTIONAL = 'オプション'
 
     # CONFIG FIELDS
     CONFIG_VERSION = 'version'
@@ -59,6 +69,7 @@ class STRING:
     START_RECOGNIZING = "┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n" \
                       + "┃                              音声認識が開始しました。                         ┃\n" \
                       + "┗━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    CONFIRM_SETTING_MODIFY = "変更した項目を保存しますか\n※一部の設定は再起動してから有効になります"
 
     # OTHERS
     LANGUAGE_MAP = {

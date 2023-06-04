@@ -7,6 +7,7 @@ import myPath
 from .frame import WorkFrame
 from .button import TransButton
 from .text import WorkText
+from .window import *
 
 
 class MainWindow(ttk.Window):
@@ -33,9 +34,13 @@ class MainWindow(ttk.Window):
         menu = ttk.Menu(self)
         self.configure(menu=menu)
 
+        optional_menu = ttk.Menu(menu)
+        menu.add_cascade(label=STRING.MENU_OPTIONAL, menu=optional_menu)
+        optional_menu.add_command(label=STRING.TITLE_SETTING, command=lambda: pop_setting_window(self))
+
         help_menu = ttk.Menu(menu)
-        help_menu.add_command(label=STRING.TITLE_ABOUT, command=self.pop_about_window)
         menu.add_cascade(label=STRING.MENU_HELP, menu=help_menu)
+        help_menu.add_command(label=STRING.TITLE_ABOUT, command=lambda: pop_about_window(self))
 
     def run(self):
         # override sys callback
@@ -50,30 +55,3 @@ class MainWindow(ttk.Window):
 
         self.destroy()
 
-    def pop_about_window(self):
-        win = ttk.Toplevel(master=self, title=STRING.TITLE_ABOUT)
-
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        x = int((screen_width / 2) - (CONST.ABOUT_WIDTH / 2))
-        y = int((screen_height / 2) - (CONST.ABOUT_HEIGHT / 2))
-        win.geometry(f'{CONST.ABOUT_WIDTH}x{CONST.ABOUT_HEIGHT}+{x}+{y}')
-
-        about_frame = ttk.Frame(win, padding=15)
-        about_frame.pack(fill=BOTH, expand=YES)
-
-        # Logo
-        img = ttk.Image.open(myPath.LOGO_IMG)
-        photo = ttk.ImageTk.PhotoImage(img)
-        label = ttk.Label(about_frame, image=photo)
-        label.image = photo
-        label.pack()
-        img.close()
-
-        # Version
-        ttk.Label(about_frame, text=f'Version: {config.get_value(STRING.CONFIG_VERSION)}').pack()
-
-        # Story
-        label_frame = ttk.Labelframe(about_frame, text=STRING.LABEL_STORY_TITLE)
-        label_frame.pack(fill=BOTH, expand=YES, pady=(15, 0))
-        ttk.Label(label_frame, text=STRING.LABEL_STORY_TEXT).pack()

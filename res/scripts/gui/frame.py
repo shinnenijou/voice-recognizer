@@ -104,7 +104,7 @@ class WorkFrame(ttk.Frame):
         ttk.Entry(name_frame, name=STRING.CONFIG_NAME).pack(side=LEFT, fill=X, expand=YES, padx=5)
 
         language_frame = ttk.Frame(self.__setting_frame)
-        language_frame.pack(fill=X, expand=YES, pady=(2.5, 0))
+        language_frame.pack(fill=X, expand=YES, pady=(10, 0))
         ttk.Label(language_frame, text=STRING.LABEL_LANGUAGE, width=15).pack(side=LEFT, padx=(15, 15))
         for text, language in STRING.LANGUAGE_MAP.items():
             button = ttk.Radiobutton(language_frame, text=text, value=language, variable=self.__setting_frame.language_var)
