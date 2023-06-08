@@ -3,7 +3,7 @@ import pyaudio
 class CONST:
     # GEOMETRY
     WINDOW_WIDTH = 600
-    WINDOW_HEIGHT = 360
+    WINDOW_HEIGHT = 600
     ABOUT_WIDTH = 300
     ABOUT_HEIGHT = 300
 
