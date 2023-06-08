@@ -56,6 +56,7 @@ class VoiceDetector(Thread):
 
             # predict voice probability
             prob = self.predict_probability(file)
+            print(prob)
             average_prob = self.__average_prob.average
             self.__average_prob.enqueue(prob)
             utils.rm(file)
