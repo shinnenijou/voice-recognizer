@@ -72,5 +72,12 @@
     "update_files": {
       "res/scripts/stream/predictor.py": "M"
     }
+  },
+  "0.2.4": {
+    "version": "0.2.4",
+    "update_files": {
+      "res/scripts/config/const.py": "M",
+      "res/scripts/gui/window.py": "M"
+    }
   }
 }
