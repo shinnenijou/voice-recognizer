@@ -4,3 +4,4 @@ soundfile
 ttkbootstrap
 torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
 faster-whisper
+tkinter-tooltip

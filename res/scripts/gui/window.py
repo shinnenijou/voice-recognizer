@@ -3,6 +3,7 @@ import os
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs import Messagebox
+from tktooltip import ToolTip
 
 from res.scripts.config import CONST, config, STRING
 import myPath
@@ -39,6 +40,7 @@ def pop_about_window(master):
 
 def pop_setting_window(master):
     win = ttk.Toplevel(master=master, title=STRING.TITLE_SETTING)
+    win.resizable(False, False)
 
     screen_width = master.winfo_screenwidth()
     screen_height = master.winfo_screenheight()
@@ -55,7 +57,10 @@ def pop_setting_window(master):
     proxy_label_var = ttk.StringVar(proxy_frame, value=STRING.LABEL_PROXY)
     proxy_entry_var = ttk.StringVar(proxy_frame, name=STRING.CONFIG_PROXY, value=config.get_value(STRING.CONFIG_PROXY))
     ttk.Label(proxy_frame, textvariable=proxy_label_var, width=15).pack(side=LEFT, padx=(15, 0))
-    ttk.Entry(proxy_frame, textvariable=proxy_entry_var).pack(side=LEFT, fill=X, expand=YES, padx=5)
+    proxy_entry = ttk.Entry(proxy_frame, textvariable=proxy_entry_var)
+    proxy_entry.pack(side=LEFT, fill=X, expand=YES, padx=5)
+    ToolTip(proxy_entry, STRING.TIP_PROXY, delay=0.5, follow=False)
+
     proxy_entry_var.trace_add('write', lambda a, b, c: proxy_label_var.set(STRING.LABEL_PROXY+STRING.LABEL_MODIFY_MARK))
 
     # MODEL
@@ -86,16 +91,30 @@ def pop_setting_window(master):
     device_button.configure(menu=device_menu)
     device_button.pack(side=LEFT, fill=X, expand=YES, padx=5)
 
+    # DETEST THRESHOLD
+    threshold_frame = ttk.Frame(setting_frame)
+    threshold_frame.pack(side=TOP, fill=X, expand=YES, pady=(5, 2.5))
+    threshold_label_var = ttk.StringVar(threshold_frame, value=STRING.LABEL_DETECT_THRESHOLD)
+    threshold_entry_var = ttk.StringVar(threshold_frame, name=STRING.CONFIG_DETECT_THRESHOLD, value=config.get_value(STRING.CONFIG_DETECT_THRESHOLD))
+    ttk.Label(threshold_frame, textvariable=threshold_label_var, width=15).pack(side=LEFT, padx=(15, 0))
+    threshold_entry = ttk.Entry(threshold_frame, textvariable=threshold_entry_var)
+    threshold_entry.pack(side=LEFT, fill=X, expand=YES, padx=5)
+    ToolTip(threshold_entry, STRING.TIP_DETECT_THRESHOLD, delay=0.5, follow=False)
+
+    proxy_entry_var.trace_add('write', lambda a, b, c: proxy_label_var.set(STRING.LABEL_PROXY+STRING.LABEL_MODIFY_MARK))
+
     # setting dict
     settings = {
         STRING.CONFIG_PROXY: proxy_entry_var,
         STRING.CONFIG_MODEL: model_menu_var,
-        STRING.CONFIG_DEVICE: device_menu_var
+        STRING.CONFIG_DEVICE: device_menu_var,
+        STRING.CONFIG_DETECT_THRESHOLD: threshold_entry_var,
     }
     labels = {
         STRING.CONFIG_PROXY: proxy_label_var,
         STRING.CONFIG_MODEL: model_label_var,
-        STRING.CONFIG_DEVICE: device_label_var
+        STRING.CONFIG_DEVICE: device_label_var,
+        STRING.CONFIG_DETECT_THRESHOLD: threshold_label_var,
     }
 
     # Confirm BUTTON
@@ -111,6 +130,7 @@ def pop_setting_window(master):
                     widget.set(widget.get()[:-1])
 
             config.save()
+            win.destroy()
 
     def on_exit():
         for name, widget in labels.items():

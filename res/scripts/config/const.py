@@ -1,5 +1,6 @@
 import pyaudio
 
+
 class CONST:
     # GEOMETRY
     WINDOW_WIDTH = 600
@@ -26,7 +27,7 @@ class STRING:
     LABEL_WEBHOOK = 'Webhook URL'
     LABEL_NAME = '名前'
     LABEL_STORY_TITLE = 'フェンリルちゃんについて'
-    LABEL_STORY_TEXT = 'お楽しみに'
+    LABEL_STORY_TEXT = 'ワン'
     LABEL_SETTING = '設定'
     LABEL_LANGUAGE = '認識言語'
     LABEL_UPDATE = 'アップデート確認中...'
@@ -39,6 +40,11 @@ class STRING:
     LABEL_NO = 'いいえ'
     LABEL_MODIFY_MARK = '*'
     LABEL_DEVICE = '使用デバイス'
+    LABEL_DETECT_THRESHOLD = '認識感度'
+
+    # TIPS
+    TIP_DETECT_THRESHOLD = 'この数字は、大きいほど音声が認識されやすいが、\nノイズも拾われやすくなる。実際試しながら適切な数値に調整してください。'
+    TIP_PROXY = '入力例：http://127.0.0.1:7890'
 
     # BUTTON TEXT
     BUTTON_START = '起動'
