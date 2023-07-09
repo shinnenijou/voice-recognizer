@@ -20,3 +20,4 @@ LOADING_WAV = join(AUDIO_RES_PATH, 'kamome.wav')
 # IMG
 LOADING_IMG = join(IMG_RES_PATH, 'loading.gif')
 LOGO_IMG = join(IMG_RES_PATH, 'logo.png')
+ICON_IMG = join(IMG_RES_PATH, 'icon.ico')

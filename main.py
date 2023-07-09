@@ -6,7 +6,7 @@ from queue import Queue as t_Queue
 import myPath
 from res.scripts.loading import check_update
 from res.scripts.utils import FileLikeQueue, mkdir, remove
-from res.scripts.config import is_gui_only, ThreadCommand
+from res.scripts.config import is_gui_only, ThreadCommand, CONST
 
 
 # GLOBAL
@@ -69,9 +69,10 @@ def main():
 
     # Main GUI Process, Threads will be managed in Main Process
     from res.scripts.gui import MainWindow
-    win = MainWindow(themename='minty', voice_queue=voice_queue, text_queue=text_queue)
+    win = MainWindow(themename='yeti', voice_queue=voice_queue, text_queue=text_queue)
 
     # start main window
+    win.init_style()
     win.run()
 
     # Exit

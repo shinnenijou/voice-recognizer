@@ -26,7 +26,7 @@ class WorkFrame(ttk.Frame):
         self.__setting_frame.pack(fill=X, expand=YES, anchor=N, side=TOP)
         self.add_options()
 
-        self.__text = WorkText(self, state=NORMAL, cursor='arrow', autohide=True, height=8, takefocus=NO, bootstyle='round')
+        self.__text = WorkText(self, state=NORMAL, cursor='arrow', autohide=True, height=8, takefocus=NO, bootstyle='round', font=CONST.GLOBAL_FONT)
         self.__text.pack(fill=BOTH, expand=YES, pady=10, side=TOP, anchor=N)
 
         self.__start_button = self.create_start_button()

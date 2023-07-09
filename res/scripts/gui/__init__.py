@@ -4,6 +4,7 @@ from ttkbootstrap.constants import *
 from res.scripts.config import CONST, config, STRING
 import myPath
 
+from .style import set_style
 from .frame import WorkFrame
 from .button import TransButton
 from .text import WorkText
@@ -23,6 +24,7 @@ class MainWindow(ttk.Window):
         y = int((screen_height / 2) - (CONST.WINDOW_HEIGHT / 2))
 
         self.title(STRING.TITLE_MAIN)
+        self.iconbitmap(myPath.ICON_IMG)
         self.geometry(f'{CONST.WINDOW_WIDTH}x{CONST.WINDOW_HEIGHT}+{x}+{y}')
         self.resizable(False, False)
 
@@ -55,3 +57,6 @@ class MainWindow(ttk.Window):
 
         self.destroy()
 
+    @staticmethod
+    def init_style():
+        set_style()

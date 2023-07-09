@@ -4,12 +4,13 @@ import pyaudio
 class CONST:
     # GEOMETRY
     WINDOW_WIDTH = 600
-    WINDOW_HEIGHT = 600
-    ABOUT_WIDTH = 300
-    ABOUT_HEIGHT = 300
+    WINDOW_HEIGHT = 400
+    ABOUT_WIDTH = 400
+    ABOUT_HEIGHT = 350
+    GLOBAL_FONT = ("Microsoft YaHei UI", 10)
 
     # LOADING
-    LOADING_FRAMERATE = 12
+    LOADING_FRAMERATE = 24
 
     # RECOGNIZER
     MODEL_LIST = ('tiny', 'small', 'base', 'medium', 'large', 'large-v2')
@@ -51,7 +52,7 @@ class STRING:
     BUTTON_STOP = '停止'
 
     # TITLE TEXT
-    TITLE_MAIN = '音声認識ちゃん'
+    TITLE_MAIN = 'フェンリルちゃん'
     TITLE_ABOUT = f'{TITLE_MAIN}について...'
     TITLE_SETTING = '詳細設定'
 
@@ -73,7 +74,7 @@ class STRING:
 
     # Message TEXT
     START_RECOGNIZING = "┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n" \
-                      + "┃                              音声認識が開始しました。                         ┃\n" \
+                      + "┃      音声認識が開始しました。   ┃\n" \
                       + "┗━━━━━━━━━━━━━━━━━━━━━━━━┛"
     CONFIRM_SETTING_MODIFY = "変更した項目を保存しますか\n※一部の設定は再起動してから有効になります"
 
