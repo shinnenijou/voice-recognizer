@@ -17,25 +17,29 @@ def pop_about_window(master):
     x = int((screen_width / 2) - (CONST.ABOUT_WIDTH / 2))
     y = int((screen_height / 2) - (CONST.ABOUT_HEIGHT / 2))
     win.geometry(f'{CONST.ABOUT_WIDTH}x{CONST.ABOUT_HEIGHT}+{x}+{y}')
+    win.resizable(False, False)
 
-    about_frame = ttk.Frame(win, padding=15)
+    about_frame = ttk.Frame(win, padding=5)
     about_frame.pack(fill=BOTH, expand=YES)
 
     # Logo
+    logo_frame = ttk.Frame(about_frame)
+    logo_frame.pack(side=LEFT)
     img = ttk.Image.open(myPath.LOGO_IMG)
     photo = ttk.ImageTk.PhotoImage(img)
-    label = ttk.Label(about_frame, image=photo)
+    label = ttk.Label(logo_frame, image=photo)
     label.image = photo
-    label.pack()
+    label.pack(side=TOP)
     img.close()
 
     # Version
-    ttk.Label(about_frame, text=f'Version: {config.get_value(STRING.CONFIG_VERSION)}').pack()
+    ttk.Label(logo_frame, text=f'Version: {config.get_value(STRING.CONFIG_VERSION)}').pack()
+    ttk.Label(logo_frame, text=f'Author: {STRING.LABEL_AUTHOR}').pack()
 
     # Story
     label_frame = ttk.Labelframe(about_frame, text=STRING.LABEL_STORY_TITLE)
-    label_frame.pack(fill=BOTH, expand=YES, pady=(15, 0))
-    ttk.Label(label_frame, text=STRING.LABEL_STORY_TEXT).pack()
+    label_frame.pack(fill=BOTH, expand=YES, side=RIGHT)
+    ttk.Label(label_frame, text=STRING.LABEL_STORY_TEXT, font=CONST.GLOBAL_FONT, justify=CENTER).pack()
 
 
 def pop_setting_window(master):

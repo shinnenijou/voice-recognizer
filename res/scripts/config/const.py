@@ -4,7 +4,7 @@ import pyaudio
 class CONST:
     # GEOMETRY
     WINDOW_WIDTH = 600
-    WINDOW_HEIGHT = 400
+    WINDOW_HEIGHT = 480
     ABOUT_WIDTH = 400
     ABOUT_HEIGHT = 350
     GLOBAL_FONT = ("Microsoft YaHei UI", 10)
@@ -28,7 +28,22 @@ class STRING:
     LABEL_WEBHOOK = 'Webhook URL'
     LABEL_NAME = '名前'
     LABEL_STORY_TITLE = 'フェンリルちゃんについて'
-    LABEL_STORY_TEXT = 'ワン'
+    LABEL_STORY_TEXT = '昔々、とある遠い国で\n' \
+                       '一群の小さなフィンリルが\n' \
+                       '可愛くて優しい魔王に従い\n' \
+                       '毎日幸せに過ごしていました\n' \
+                       '\n' \
+                       'しかし\n' \
+                       '魔王の言葉は難しくて\n' \
+                       'フィンリルたちは理解できず\n' \
+                       '交流することができませんでした\n' \
+                       '「魔王ちゃま、今何言ってまちゅか」\n' \
+                       '「！＠＃＄％＾＆＠＃＄」\n' \
+                       '「魔王ちゃま、分かんないよ！」\n' \
+                       'そして、何十年、何百年を経て\n' \
+                       'ついに、一狼の狼工知能\n' \
+                       '「フェンリルちゃん」\n' \
+                       'が出現しました...'
     LABEL_SETTING = '設定'
     LABEL_LANGUAGE = '認識言語'
     LABEL_UPDATE = 'アップデート確認中...'
@@ -42,6 +57,7 @@ class STRING:
     LABEL_MODIFY_MARK = '*'
     LABEL_DEVICE = '使用デバイス'
     LABEL_DETECT_THRESHOLD = '認識感度'
+    LABEL_AUTHOR = 'Shinnen'
 
     # TIPS
     TIP_DETECT_THRESHOLD = 'この数字は、大きいほど音声が認識されやすいが、\nノイズも拾われやすくなる。実際試しながら適切な数値に調整してください。'
