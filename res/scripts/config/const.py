@@ -10,7 +10,7 @@ class CONST:
     GLOBAL_FONT = ("Microsoft YaHei UI", 10)
 
     # LOADING
-    LOADING_FRAMERATE = 24
+    LOADING_FRAMERATE = 15
 
     # RECOGNIZER
     MODEL_LIST = ('tiny', 'small', 'base', 'medium', 'large', 'large-v2')
