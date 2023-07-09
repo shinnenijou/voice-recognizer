@@ -12,7 +12,7 @@ class LoadingScreen(tk.Tk):
         super().__init__()
         self.__stop_flag = flag
         self.__text_queue = src_queue
-        self.__text = tk.StringVar(value=STRING.LABEL_DOWNLOAD)
+        self.__text = tk.StringVar(value=STRING.LABEL_UPDATE)
 
         # Loading Image
         img = Image.open(myPath.LOADING_IMG)
@@ -33,13 +33,10 @@ class LoadingScreen(tk.Tk):
         self.resizable(False, False)
 
         self.__image = tk.Label(self)
-        self.__image.grid(row=0, column=0, rowspan=2)
+        self.__image.place(x=-2, y=-2)
 
-        self.__label = tk.Label(self, text=STRING.LABEL_UPDATE)
-        self.__label.grid(row=0, column=0, sticky=tk.N)
-
-        self.__label_2 = tk.Label(self, textvariable=self.__text)
-        self.__label_2.grid(row=1, column=0, sticky=tk.N)
+        self.__label_2 = tk.Label(self, textvariable=self.__text, bg="#136dad", fg="#ffffff", font=("Microsoft YaHei UI", "14", "bold"))
+        self.__label_2.place(x=275, y=210, anchor="center")
 
         img.close()
         self.show_next_frame()
