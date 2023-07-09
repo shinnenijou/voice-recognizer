@@ -79,5 +79,20 @@
       "res/scripts/config/const.py": "M",
       "res/scripts/gui/window.py": "M"
     }
+  },
+  "0.2.5": {
+    "version": "0.2.5",
+    "update_files": {
+      "res/img/loading.gif": "M",
+      "res/scripts/loading/loadingScreen.py": "M",
+      "main.py": "M",
+      "myPath.py": "M",
+      "res/img/icon.ico": "A",
+      "res/scripts/config/const.py": "M",
+      "res/scripts/gui/__init__.py": "M",
+      "res/scripts/gui/frame.py": "M",
+      "res/scripts/gui/style.py": "A",
+      "res/scripts/gui/window.py": "M"
+    }
   }
 }
