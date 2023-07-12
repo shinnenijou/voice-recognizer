@@ -104,5 +104,19 @@
       "res/scripts/recognize/__init__.py": "M",
       "res/scripts/utils/__init__.py": "M"
     }
+  },
+  "0.2.7": {
+    "version": "0.2.7",
+    "update_files": {
+      "res/scripts/gui/frame.py": "M",
+      "res/scripts/managers/thread_manager.py": "M",
+      "res/scripts/recognize/__init__.py": "M",
+      "res/scripts/stream/predictor.py": "M",
+      "res/scripts/webhook/__init__.py": "M",
+      "res/scripts/config/__init__.py": "M",
+      "res/scripts/config/config.py": "M",
+      "res/scripts/gui/window.py": "M",
+      "res/scripts/utils/__init__.py": "M"
+    }
   }
 }
