@@ -94,5 +94,15 @@
       "res/scripts/gui/style.py": "A",
       "res/scripts/gui/window.py": "M"
     }
+  },
+  "0.2.6": {
+    "version": "0.2.6",
+    "update_files": {
+      "res/scripts/config/const.py": "M",
+      "main.py": "M",
+      "myPath.py": "M",
+      "res/scripts/recognize/__init__.py": "M",
+      "res/scripts/utils/__init__.py": "M"
+    }
   }
 }
