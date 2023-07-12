@@ -3,6 +3,8 @@ import shutil
 import time
 from multiprocessing import Queue
 
+import myPath
+
 
 class FileLikeQueue:
     def __init__(self):
@@ -24,7 +26,7 @@ class FileLikeQueue:
 
 class Logger:
     def __init__(self):
-        self.__log_dir = None
+        self.__log_dir = myPath.LOG_PATH
 
     def init(self, dir_path):
         if not os.path.exists(dir_path) or not os.path.isdir(dir_path):
