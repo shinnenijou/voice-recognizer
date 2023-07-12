@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 from multiprocessing import Queue
 
 
@@ -19,6 +20,29 @@ class FileLikeQueue:
             ret.append(self.__queue.get())
 
         return ret
+
+
+class Logger:
+    def __init__(self):
+        self.__log_dir = None
+
+    def init(self, dir_path):
+        if not os.path.exists(dir_path) or not os.path.isdir(dir_path):
+            os.mkdir(dir_path)
+
+        self.__log_dir = dir_path
+
+    def log_error(self, msg: str):
+        with open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a") as file:
+            file.write(f"[{get_hms_time()}][error]{msg}\n")
+
+    def log_info(self,msg: str):
+        with open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a") as file:
+            file.write(f"[{get_hms_time()}][info]{msg}\n")
+
+    def log_warning(self,msg: str):
+        with open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a") as file:
+            file.write(f"[{get_hms_time()}][warning]{msg}\n")
 
 
 class MoveAverage:
@@ -108,3 +132,18 @@ def rm(file_path):
 
 def get_files(path):
     return os.listdir(path)
+
+
+def get_ms_time():
+    return int(time.time() * 1000)
+
+
+def get_date():
+    return time.strftime("%Y-%m-%d", time.gmtime())
+
+
+def get_hms_time():
+    return time.strftime("%H-%M-%S", time.gmtime())
+
+
+logger = Logger()

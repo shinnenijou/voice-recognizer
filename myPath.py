@@ -2,6 +2,7 @@ from os.path import join, dirname
 
 # DIR
 ROOT_PATH = dirname(__file__)
+LOG_PATH = join(ROOT_PATH, 'logs')
 RES_PATH = join(ROOT_PATH, 'res')
 ENV_PATH = join(ROOT_PATH, 'env')
 TEMP_PATH = join(ROOT_PATH, '.temp')

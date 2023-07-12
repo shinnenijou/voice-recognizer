@@ -5,8 +5,8 @@ from queue import Queue as t_Queue
 
 import myPath
 from res.scripts.loading import check_update
-from res.scripts.utils import FileLikeQueue, mkdir, remove
-from res.scripts.config import is_gui_only, ThreadCommand, CONST
+from res.scripts.utils import FileLikeQueue, mkdir, remove,logger
+from res.scripts.config import is_gui_only, ThreadCommand
 
 
 # GLOBAL
@@ -41,6 +41,9 @@ def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
 
 def main():
     global loading_screen
+
+    # init log
+    logger.init(myPath.LOG_PATH)
 
     # Redirect standard output
     output = FileLikeQueue()

@@ -6,6 +6,7 @@ import torch
 
 import myPath
 from res.scripts.config import CONST, config, STRING
+from res.scripts.utils import logger
 
 
 class WhisperRecognizer:
@@ -25,7 +26,10 @@ class WhisperRecognizer:
             device=device
         )
 
-        print("cuda: ", torch.cuda.is_available())
+        if not torch.cuda.is_available():
+            logger.log_warning("cuda is not available!")
+        else:
+            logger.log_info("cuda is available.")
 
         if os.path.exists(myPath.LOADING_WAV):
             self.transcribe(myPath.LOADING_WAV, 'ja')
