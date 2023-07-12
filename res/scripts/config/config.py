@@ -5,7 +5,7 @@ from .const import STRING
 
 REQUIRE_FIELDS = {
     STRING.CONFIG_AVERAGE_WINDOW: 10,
-    STRING.CONFIG_DETECT_THRESHOLD: 0.05,
+    STRING.CONFIG_DETECT_THRESHOLD: 0.2,
     STRING.CONFIG_UPDATE_INTERVAL: 100,
     STRING.CONFIG_LANGUAGE: 'ja',
     STRING.CONFIG_MODEL: "large-v2",
@@ -25,6 +25,10 @@ class Config(RawConfigParser):
         for field, default_value in REQUIRE_FIELDS.items():
             if not self.has_option(self.__section, field):
                 self.set_value(field, default_value)
+
+        # some special validata
+        if not utils.is_unit_float(self.get_value(STRING.CONFIG_DETECT_THRESHOLD)):
+            self.set_value(STRING.CONFIG_DETECT_THRESHOLD, REQUIRE_FIELDS[STRING.CONFIG_DETECT_THRESHOLD])
 
         self.save()
 

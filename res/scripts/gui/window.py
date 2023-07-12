@@ -5,7 +5,8 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs import Messagebox
 from tktooltip import ToolTip
 
-from res.scripts.config import CONST, config, STRING
+from res.scripts.config import CONST, config, STRING, REQUIRE_FIELDS
+import res.scripts.utils as utils
 import myPath
 
 
@@ -101,7 +102,10 @@ def pop_setting_window(master):
     threshold_label_var = ttk.StringVar(threshold_frame, value=STRING.LABEL_DETECT_THRESHOLD)
     threshold_entry_var = ttk.StringVar(threshold_frame, name=STRING.CONFIG_DETECT_THRESHOLD, value=config.get_value(STRING.CONFIG_DETECT_THRESHOLD))
     ttk.Label(threshold_frame, textvariable=threshold_label_var, width=15).pack(side=LEFT, padx=(15, 0))
-    threshold_entry = ttk.Entry(threshold_frame, textvariable=threshold_entry_var)
+    threshold_entry = ttk.Entry(threshold_frame, textvariable=threshold_entry_var, validate="focus")
+
+    threshold_entry.configure(validatecommand=lambda: utils.is_unit_float(threshold_entry.get()))
+
     threshold_entry.pack(side=LEFT, fill=X, expand=YES, padx=5)
     ToolTip(threshold_entry, STRING.TIP_DETECT_THRESHOLD, delay=0.5, follow=False)
 
@@ -126,12 +130,17 @@ def pop_setting_window(master):
         if Messagebox.show_question(message=STRING.CONFIRM_SETTING_MODIFY, title=STRING.LABEL_SAVE,
                                     buttons=[f'{STRING.LABEL_YES}:primary', f'{STRING.LABEL_NO}:secondary'],
                                     parent=win, alert=False) == STRING.LABEL_YES:
+
             for name, widget in settings.items():
                 config.set_value(name, widget.get())
 
             for name, widget in labels.items():
                 if widget.get()[-1] == STRING.LABEL_MODIFY_MARK:
                     widget.set(widget.get()[:-1])
+
+            # some special validate
+            if not utils.is_unit_float(config.get_value(STRING.CONFIG_DETECT_THRESHOLD)):
+                config.set_value(STRING.CONFIG_DETECT_THRESHOLD, REQUIRE_FIELDS[STRING.CONFIG_DETECT_THRESHOLD])
 
             config.save()
             win.destroy()

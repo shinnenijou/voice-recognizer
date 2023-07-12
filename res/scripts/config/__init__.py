@@ -3,7 +3,7 @@ import os
 import myPath
 
 from .const import *
-from .config import Config
+from .config import Config, REQUIRE_FIELDS
 from .error import *
 
 config = Config(myPath.CONFIG_FILE)

@@ -148,4 +148,20 @@ def get_hms_time():
     return time.strftime("%H-%M-%S", time.gmtime())
 
 
+def is_float(string: str):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
+
+def is_unit_float(string: str):
+    try:
+        value = float(string)
+        return 0 < value <= 1
+    except ValueError:
+        return False
+
+
 logger = Logger()
