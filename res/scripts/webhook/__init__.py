@@ -1,8 +1,10 @@
+import time
 import requests
 from threading import Thread, Event
 from multiprocessing import Queue as p_Queue
 
-from res.scripts.config import config, STRING
+from res.scripts.config import config, STRING, CONST
+from res.scripts.utils import logger
 
 PROXIES = {}
 if config.get_value(STRING.CONFIG_PROXY):
@@ -32,8 +34,8 @@ class WebhookSender(Thread):
 
         try:
             self.__session.post(url, data=self.__payload, proxies=PROXIES)
-        except:
-            pass
+        except Exception as e:
+            logger.log_error("[WebhookSender:send]", str(e))
 
     def run(self):
         url = config.get_value(STRING.CONFIG_WEBHOOK)
@@ -41,6 +43,7 @@ class WebhookSender(Thread):
 
         while self.__running_flag.is_set():
             if self.__src_queue.empty():
+                time.sleep(config.get_int(STRING.CONFIG_UPDATE_INTERVAL) / 1000)
                 continue
 
             text = self.__src_queue.get()

@@ -32,8 +32,10 @@ class WhisperRecognizer:
             logger.log_info("cuda is available.")
 
         if os.path.exists(myPath.LOADING_WAV):
-            self.transcribe(myPath.LOADING_WAV, 'ja')
-            pass
+            try:
+                self.transcribe(myPath.LOADING_WAV, 'ja')
+            except Exception as e:
+                logger.log_error("[WhisperRecognizer:transcribe]", str(e))
 
     def transcribe(self, _input: str, _language: str):
         segments, info = self.__model.transcribe(

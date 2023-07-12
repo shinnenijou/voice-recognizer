@@ -1,5 +1,6 @@
 import wave
 import os
+import time
 from threading import Thread, Event
 from queue import Queue as t_Queue
 
@@ -49,6 +50,7 @@ class VoiceDetector(Thread):
         wave_data = b''
         while self.__running_flag.is_set():
             if self.__src_queue.empty():
+                time.sleep(config.get_int(STRING.CONFIG_UPDATE_INTERVAL) / 1000)
                 continue
 
             data = self.__src_queue.get()

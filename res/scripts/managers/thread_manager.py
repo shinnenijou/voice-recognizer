@@ -1,6 +1,7 @@
 from threading import Thread, Event
 import gc
 from res.scripts.config import EResult, ErrorString
+from res.scripts.utils import logger
 
 
 class ThreadManager:
@@ -55,8 +56,7 @@ class ThreadManager:
 
             if result != EResult.Success:
                 self.__clear()
-                if result in ErrorString:
-                    print(ErrorString[result])
+                logger.log_error(f"thread_name init failed: ", ErrorString.get(result, ""))
 
                 return False
 

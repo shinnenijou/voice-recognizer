@@ -96,12 +96,16 @@ class WorkFrame(ttk.Frame):
         url_frame = ttk.Frame(self.__setting_frame)
         url_frame.pack(fill=X, expand=YES, pady=(0, 2.5))
         ttk.Label(url_frame, text=STRING.LABEL_WEBHOOK, width=15).pack(side=LEFT, padx=(15, 0))
-        ttk.Entry(url_frame, name=STRING.CONFIG_WEBHOOK).pack(side=LEFT, fill=X, expand=YES, padx=5)
+        entry = ttk.Entry(url_frame, name=STRING.CONFIG_WEBHOOK)
+        entry.pack(side=LEFT, fill=X, expand=YES, padx=5)
+        entry.insert(0, config.get_value(STRING.CONFIG_WEBHOOK))
 
         name_frame = ttk.Frame(self.__setting_frame)
         name_frame.pack(fill=X, expand=YES, pady=(2.5, 2.5))
         ttk.Label(name_frame, text=STRING.LABEL_NAME, width=15).pack(side=LEFT, padx=(15, 0))
-        ttk.Entry(name_frame, name=STRING.CONFIG_NAME).pack(side=LEFT, fill=X, expand=YES, padx=5)
+        entry = ttk.Entry(name_frame, name=STRING.CONFIG_NAME)
+        entry.pack(side=LEFT, fill=X, expand=YES, padx=5)
+        entry.insert(0, config.get_value(STRING.CONFIG_NAME))
 
         language_frame = ttk.Frame(self.__setting_frame)
         language_frame.pack(fill=X, expand=YES, pady=(10, 0))
@@ -153,9 +157,10 @@ class SettingFrame(ttk.Labelframe):
                     widget.configure(state=DISABLED)
 
     def save_setting(self):
-        for name, widget in self.children.items():
-            if isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Combobox):
-                config.set_value(name, widget.get())
+        for _, frame in self.children.items():
+            for name, widget in frame.children.items():
+                if isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Combobox):
+                    config.set_value(name, widget.get())
 
         config.set_value(STRING.CONFIG_LANGUAGE, self.language_var.get())
 
