@@ -11,6 +11,7 @@ from res.scripts.config import is_gui_only, ThreadCommand
 
 # GLOBAL
 p_recognizer = None
+output = FileLikeQueue()
 voice_queue = p_Queue(maxsize=0)
 text_queue = p_Queue(maxsize=0)
 loading_screen = None
@@ -19,6 +20,7 @@ loading_screen = None
 def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
     global p_recognizer
     global loading_screen
+    global output
 
     # update resource
     if check_update(queue):
@@ -30,7 +32,7 @@ def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
         running_flag = p_Event()
 
         recognizer = WhisperRecognizer(src_queue=voice_queue, dst_queue=text_queue)
-        p_recognizer = Process(target=recognizer.run, args=(running_flag,), name='Whisper')
+        p_recognizer = Process(target=recognizer.run, args=(running_flag, output, ), name='Whisper')
 
         # Start
         p_recognizer.start()
@@ -46,7 +48,6 @@ def main():
     logger.init(myPath.LOG_PATH)
 
     # Redirect standard output
-    output = FileLikeQueue()
     save_stdout = sys.stdout
     save_stderr = sys.stderr
     sys.stdout = output

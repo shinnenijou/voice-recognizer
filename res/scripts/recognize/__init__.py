@@ -1,4 +1,5 @@
 import os
+import sys
 from multiprocessing import Event
 
 from faster_whisper import WhisperModel
@@ -54,7 +55,10 @@ class WhisperRecognizer:
 
         return texts
 
-    def run(self, running_flag: Event):
+    def run(self, running_flag: Event, output):
+        sys.stdout = output
+        sys.stderr = output
+
         self.init()
 
         running_flag.set()
