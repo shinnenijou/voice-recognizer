@@ -48,7 +48,9 @@ def main():
     # Redirect standard output
     output = FileLikeQueue()
     save_stdout = sys.stdout
+    save_stderr = sys.stderr
     sys.stdout = output
+    sys.stderr = output
     mkdir(myPath.TEMP_PATH)
 
     # start loading screen
@@ -84,6 +86,7 @@ def main():
 
     remove(myPath.TEMP_PATH)
     sys.stdout = save_stdout
+    sys.stderr = save_stderr
 
 
 if __name__ == '__main__':
