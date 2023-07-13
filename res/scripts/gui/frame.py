@@ -6,6 +6,7 @@ from ttkbootstrap.constants import *
 
 from res.scripts.config import CONST, is_gui_only, config, STRING
 from res.scripts.managers import ThreadManager
+from res.scripts.utils import logger
 
 from .button import TransButton
 from .text import WorkText
@@ -44,22 +45,32 @@ class WorkFrame(ttk.Frame):
     # WORK CONTROL
     def start_threads(self):
         if self.__thread_manager.is_running():
+            logger.log_warning("[start_threads]threads has started.")
             return True
 
-        # 保存配置
-        self.__text.clear_text()
-        self.__setting_frame.save_setting()
+        result = False
 
-        result = self.__thread_manager.start()
-        if result:
-            self.__setting_frame.disable_setting()
+        try:
+            # 保存配置
+            self.__text.clear_text()
+            self.__setting_frame.save_setting()
+
+            result = self.__thread_manager.start()
+            if result:
+                self.__setting_frame.disable_setting()
+        except Exception as e:
+            logger.log_error("[start_threads]threads failed to start:", str(e))
 
         return result
 
     def stop_threads(self):
-        result = self.__thread_manager.stop()
-        if result:
-            self.__setting_frame.enable_setting()
+        result = False
+        try:
+            result = self.__thread_manager.stop()
+            if result:
+                self.__setting_frame.enable_setting()
+        except Exception as e:
+            logger.log_error("[stop_threads]threads failed to stop:", str(e))
 
         return result
 
