@@ -132,5 +132,15 @@
       "main.py": "M",
       "res/scripts/recognize/__init__.py": "M"
     }
+  },
+  "0.2.10": {
+    "version": "0.2.10",
+    "update_files": {
+      "main.py": "M",
+      "res/scripts/gui/frame.py": "M",
+      "res/scripts/managers/thread_manager.py": "M",
+      "res/scripts/recognize/__init__.py": "M",
+      "res/scripts/webhook/__init__.py": "M"
+    }
   }
 }
