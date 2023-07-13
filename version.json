@@ -125,5 +125,12 @@
       "res/scripts/managers/thread_manager.py": "M",
       "res/scripts/gui/frame.py": "M"
     }
+  },
+  "0.2.9": {
+    "version": "0.2.9",
+    "update_files": {
+      "main.py": "M",
+      "res/scripts/recognize/__init__.py": "M"
+    }
   }
 }
