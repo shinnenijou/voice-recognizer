@@ -36,7 +36,7 @@ class WhisperRecognizer:
             try:
                 self.transcribe(myPath.LOADING_WAV, 'ja')
             except Exception as e:
-                logger.log_error("[WhisperRecognizer:transcribe]", str(e))
+                logger.log_error("[WhisperRecognizer:transcribe]" + str(e))
 
     def transcribe(self, _input: str, _language: str):
         segments, info = self.__model.transcribe(

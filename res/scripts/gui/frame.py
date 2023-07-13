@@ -59,7 +59,7 @@ class WorkFrame(ttk.Frame):
             if result:
                 self.__setting_frame.disable_setting()
         except Exception as e:
-            logger.log_error("[start_threads]threads failed to start:", str(e))
+            logger.log_error("[start_threads]threads failed to start:" + str(e))
 
         return result
 
@@ -70,7 +70,7 @@ class WorkFrame(ttk.Frame):
             if result:
                 self.__setting_frame.enable_setting()
         except Exception as e:
-            logger.log_error("[stop_threads]threads failed to stop:", str(e))
+            logger.log_error("[stop_threads]threads failed to stop:" + str(e))
 
         return result
 

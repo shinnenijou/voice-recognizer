@@ -35,7 +35,7 @@ class WebhookSender(Thread):
         try:
             self.__session.post(url, data=self.__payload, proxies=PROXIES)
         except Exception as e:
-            logger.log_error("[WebhookSender:send]", str(e))
+            logger.log_error("[WebhookSender:send]" + str(e))
 
     def run(self):
         url = config.get_value(STRING.CONFIG_WEBHOOK)

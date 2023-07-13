@@ -56,7 +56,7 @@ class ThreadManager:
 
             if result != EResult.Success:
                 self.__clear()
-                logger.log_error(f"{thread_name} init failed: ", ErrorString.get(result, ""))
+                logger.log_error(f"{thread_name} init failed: " + ErrorString.get(result, ""))
 
                 return False
 

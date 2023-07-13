@@ -27,7 +27,7 @@ def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
         if check_update(queue):
             is_reboot.set()
     except Exception as e:
-        logger.log_error(f"[check_update]now version: {config.get_value(STRING.CONFIG_VERSION)}, update failed: ", str(e))
+        logger.log_error(f"[check_update]now version: {config.get_value(STRING.CONFIG_VERSION)}, update failed: " + str(e))
 
     # Init processes
     if not is_gui_only():
