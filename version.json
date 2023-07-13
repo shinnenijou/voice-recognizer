@@ -118,5 +118,12 @@
       "res/scripts/gui/window.py": "M",
       "res/scripts/utils/__init__.py": "M"
     }
+  },
+  "0.2.8": {
+    "version": "0.2.8",
+    "update_files": {
+      "res/scripts/managers/thread_manager.py": "M",
+      "res/scripts/gui/frame.py": "M"
+    }
   }
 }
