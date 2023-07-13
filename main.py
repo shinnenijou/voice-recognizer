@@ -6,7 +6,7 @@ from queue import Queue as t_Queue
 import myPath
 from res.scripts.loading import check_update
 from res.scripts.utils import FileLikeQueue, mkdir, remove,logger
-from res.scripts.config import is_gui_only, ThreadCommand
+from res.scripts.config import is_gui_only, ThreadCommand, config, STRING
 
 
 # GLOBAL
@@ -22,9 +22,12 @@ def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
     global loading_screen
     global output
 
-    # update resource
-    if check_update(queue):
-        is_reboot.set()
+    try:
+        # update resource
+        if check_update(queue):
+            is_reboot.set()
+    except Exception as e:
+        logger.log_error(f"[check_update]now version: {config.get_value(STRING.CONFIG_VERSION)}, update failed: ", str(e))
 
     # Init processes
     if not is_gui_only():
@@ -36,7 +39,8 @@ def loading(is_complete: t_Event, is_reboot: t_Event, queue: t_Queue):
 
         # Start
         p_recognizer.start()
-        running_flag.wait()
+        if not running_flag.wait(timeout=60):
+            is_reboot.is_set()
 
     is_complete.set()
 
