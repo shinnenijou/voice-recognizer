@@ -142,5 +142,15 @@
       "res/scripts/recognize/__init__.py": "M",
       "res/scripts/webhook/__init__.py": "M"
     }
+  },
+  "0.2.11": {
+    "version": "0.2.11",
+    "update_files": {
+      "res/scripts/recognize/__init__.py": "M",
+      "res/scripts/webhook/__init__.py": "M",
+      "res/scripts/config/config.py": "M",
+      "res/scripts/config/const.py": "M",
+      "res/scripts/gui/window.py": "M"
+    }
   }
 }
