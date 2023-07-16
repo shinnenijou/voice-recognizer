@@ -67,4 +67,5 @@ class WhisperRecognizer:
             file, language = self.__src_queue.get()
             texts = self.transcribe(file, language)
             for text in texts:
+                print(text)
                 self.__dst_queue.put(text)

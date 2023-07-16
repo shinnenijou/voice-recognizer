@@ -50,7 +50,6 @@ class WebhookSender(Thread):
             if text == '':
                 continue
 
-            print(text)
             self.send(url, name, text)
 
         self.__session.close()
