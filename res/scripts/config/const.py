@@ -58,6 +58,7 @@ class STRING:
     LABEL_DEVICE = '使用デバイス'
     LABEL_DETECT_THRESHOLD = '認識感度'
     LABEL_AUTHOR = 'Shinnen'
+    LABEL_TIMEOUT = '送信タイムアウト'
 
     # TIPS
     TIP_DETECT_THRESHOLD = 'この数字は、大きいほど音声が認識されやすいが、\nノイズも拾われやすくなる。実際試しながら適切な数値に調整してください。'
@@ -87,6 +88,7 @@ class STRING:
     CONFIG_AVERAGE_WINDOW = 'moving_average_window'
     CONFIG_UPDATE_INTERVAL = 'update_interval'
     CONFIG_PROXY = 'proxy'
+    CONFIG_TIMEOUT = 'timeout'
 
     # Message TEXT
     START_RECOGNIZING = "┏━━━━━━━━━━━━━━━━━━━━━━━━┓\n" \

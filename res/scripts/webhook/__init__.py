@@ -24,6 +24,7 @@ class WebhookSender(Thread):
 
         self.__src_queue: p_Queue = kwargs.get('src_queue')
         self.__running_flag = _running_flag
+        self.__timeout = config.get_float(STRING.CONFIG_TIMEOUT)
 
     def send(self, url: str, name: str, content: str):
         if not url:
@@ -33,7 +34,7 @@ class WebhookSender(Thread):
         self.__payload['username'] = name
 
         try:
-            self.__session.post(url, data=self.__payload, proxies=PROXIES)
+            self.__session.post(url, data=self.__payload, proxies=PROXIES, timeout=self.__timeout)
         except Exception as e:
             logger.log_error("[WebhookSender:send]" + str(e))
 
