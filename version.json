@@ -152,5 +152,13 @@
       "res/scripts/config/const.py": "M",
       "res/scripts/gui/window.py": "M"
     }
+  },
+  "0.2.12": {
+    "version": "0.2.12",
+    "update_files": {
+      "main.py": "M",
+      "res/scripts/recognize/__init__.py": "M",
+      "res/scripts/utils/__init__.py": "M"
+    }
   }
 }
