@@ -48,5 +48,11 @@
       "res/scripts/stream/recorder.py": "M",
       "res/scripts/utils/__init__.py": "M"
     }
+  },
+  "0.2.15": {
+    "version": "0.2.15",
+    "update_files": {
+      "res/scripts/utils/__init__.py": "M"
+    }
   }
 }
