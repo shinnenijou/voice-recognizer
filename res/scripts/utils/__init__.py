@@ -1,14 +1,15 @@
 import os
 import shutil
 import time
-from multiprocessing import Queue
+from multiprocessing import Queue as p_Queue
+from queue import Queue as t_Queue
 
 import myPath
 
 
 class FileLikeQueue:
     def __init__(self):
-        self.__queue = Queue(maxsize=0)
+        self.__queue = p_Queue(maxsize=0)
 
     def write(self, data):
         self.__queue.put(data)
@@ -49,30 +50,47 @@ class Logger:
 
 class MoveAverage:
     def __init__(self, window: int):
-        self.__tail = 0
         self.__window = window
-        self.__queue = [0.0] * window
+        self.__queue = t_Queue(maxsize=0)
+        self.__size = 0
         self.__average = 0.0
+        self.__sum = 0.0
+        self.__range = 1.0
+        self.__min = 0.0
+        self.__max = 0.0
 
     def enqueue(self, value: float):
-        head = self.__queue[self.__tail]
-        value = value / self.__window
+        if self.__size >= self.__window:
+            head = self.__queue.get()
+            self.__sum -= head
+            self.__size -= 1
 
-        self.__queue[self.__tail] = value
-        self.__average = self.__average - head + value
+        self.__queue.put(value)
+        self.__size += 1
+        self.__sum += value
+        self.__average += self.__sum / self.__size
+        self.__max = max(self.__queue.queue)
+        self.__min = min(self.__queue.queue)
+        self.__range = self.__max - self.__min
 
-        self.__tail = (self.__tail + 1) % self.__window
-
-        return self.__average
-
-    def set_average(self, value: float):
-        self.__average = value
-        for i in range(self.__window):
-            self.__queue[i] = value / self.__window
+    def is_upper_deviation(self, value: float, threshold: float = 1.0):
+        return value > self.__average + self.__range * threshold
 
     @property
     def average(self):
         return self.__average
+
+    @property
+    def max(self):
+        return self.__max
+
+    @property
+    def min(self):
+        return self.__min
+
+    @property
+    def range(self):
+        return self.__range
 
 
 def isfile(file_path):
