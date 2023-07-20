@@ -1,7 +1,7 @@
 import os
 import shutil
 import time
-from multiprocessing import Queue, Lock
+from multiprocessing import Queue
 
 import myPath
 
@@ -27,37 +27,24 @@ class FileLikeQueue:
 class Logger:
     def __init__(self):
         self.__log_dir = myPath.LOG_PATH
-        self.__logfile = None
-        self.__lock = Lock()
 
     def init(self, dir_path):
         if not os.path.exists(dir_path) or not os.path.isdir(dir_path):
             os.mkdir(dir_path)
 
         self.__log_dir = dir_path
-        self.__logfile = open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a")
-
-    def close(self):
-        if self.__logfile is not None:
-            self.__logfile.close()
-
-    def get_logfile(self):
-        return self.__logfile
 
     def log_error(self, msg: str):
-        self.__lock.acquire()
-        self.__logfile.write(f"[{get_hms_time()}][error]{msg}\n")
-        self.__lock.release()
+        with open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a") as file:
+            file.write(f"[{get_hms_time()}][error]{msg}\n")
 
-    def log_info(self, msg: str):
-        self.__lock.acquire()
-        self.__logfile.write(f"[{get_hms_time()}][info]{msg}\n")
-        self.__lock.release()
+    def log_info(self,msg: str):
+        with open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a") as file:
+            file.write(f"[{get_hms_time()}][info]{msg}\n")
 
-    def log_warning(self, msg: str):
-        self.__lock.acquire()
-        self.__logfile.write(f"[{get_hms_time()}][warning]{msg}\n")
-        self.__lock.release()
+    def log_warning(self,msg: str):
+        with open(os.path.join(self.__log_dir, f"{get_date()}.log"), "a") as file:
+            file.write(f"[{get_hms_time()}][warning]{msg}\n")
 
 
 class MoveAverage:

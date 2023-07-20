@@ -7,7 +7,7 @@ import torch
 
 import myPath
 from res.scripts.config import CONST, config, STRING
-from res.scripts.utils import logger, get_date
+from res.scripts.utils import logger
 
 
 class WhisperRecognizer:
@@ -57,7 +57,7 @@ class WhisperRecognizer:
 
     def run(self, running_flag: Event, output):
         sys.stdout = output
-        sys.stderr = logger.get_logfile()
+        sys.stderr = output
 
         self.init()
 

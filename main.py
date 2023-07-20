@@ -5,8 +5,9 @@ from queue import Queue as t_Queue
 
 import myPath
 from res.scripts.loading import check_update
-from res.scripts.utils import FileLikeQueue, mkdir, remove, logger, get_date
+from res.scripts.utils import FileLikeQueue, mkdir, remove,logger
 from res.scripts.config import is_gui_only, ThreadCommand, config, STRING
+
 
 # GLOBAL
 p_recognizer = None
@@ -49,10 +50,13 @@ def main():
 
     # init log
     logger.init(myPath.LOG_PATH)
-    mkdir(myPath.TEMP_PATH)
 
-    # Redirect standard error
-    sys.stderr = logger.get_logfile()
+    # Redirect standard output
+    save_stdout = sys.stdout
+    save_stderr = sys.stderr
+    sys.stdout = output
+    sys.stderr = output
+    mkdir(myPath.TEMP_PATH)
 
     # start loading screen
     from res.scripts.loading import LoadingScreen
@@ -65,9 +69,6 @@ def main():
     t_loading.start()
     loading_screen.mainloop()
     t_loading.join()
-
-    # Redirect standard output
-    sys.stdout = output
 
     # Reboot after updating
     if reboot_flag.is_set():
@@ -88,8 +89,9 @@ def main():
     if not is_gui_only():
         p_recognizer.terminate()
 
-    logger.close()
     remove(myPath.TEMP_PATH)
+    sys.stdout = save_stdout
+    sys.stderr = save_stderr
 
 
 if __name__ == '__main__':
