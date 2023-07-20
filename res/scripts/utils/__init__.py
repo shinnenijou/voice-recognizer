@@ -68,7 +68,7 @@ class MoveAverage:
         self.__queue.put(value)
         self.__size += 1
         self.__sum += value
-        self.__average += self.__sum / self.__size
+        self.__average = self.__sum / self.__size
         self.__max = max(self.__queue.queue)
         self.__min = min(self.__queue.queue)
         self.__range = self.__max - self.__min
