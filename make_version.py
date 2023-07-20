@@ -14,8 +14,8 @@ IGNORE_FILES = [
 ]
 
 # 更新工作流: 在主分支需要更新的版本打上tag以后更新到这里, 生成version.json后提交即可
-LATEST_TAG = '0.2.12'
-UPDATE_ALL = False
+LATEST_TAG = '0.2.13'
+UPDATE_ALL = True
 
 
 def parse_version(string: str):
