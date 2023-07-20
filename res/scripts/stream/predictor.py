@@ -17,9 +17,6 @@ torch.set_num_threads(1)
 
 
 class VoiceDetector(Thread):
-    class State:
-        Voice = 1
-        Silent = 2
 
     def __init__(self, _running_flag: Event, **kwargs):
         super().__init__()
@@ -36,11 +33,9 @@ class VoiceDetector(Thread):
          self.__VADIterator,
          self.__collect_chunks) = model_utils
 
-        self.__data_queue = t_Queue(maxsize=0)
-        self.__state = self.State.Silent
-
         self.__average_prob = utils.MoveAverage(config.get_int(STRING.CONFIG_AVERAGE_WINDOW))
-        self.__detect_threshold = 1 / config.get_float(STRING.CONFIG_DETECT_THRESHOLD)
+        self.__sentence_flag = False
+        self.__detect_threshold = config.get_float(STRING.CONFIG_DETECT_THRESHOLD)
 
         self.__index = 0
         self.__running_flag = _running_flag
@@ -63,39 +58,22 @@ class VoiceDetector(Thread):
 
             # predict voice probability
             prob = self.predict_probability(file)
+            average_prob = self.__average_prob.average
+            self.__average_prob.enqueue(prob)
             utils.rm(file)
 
-            # State machine
-            if self.__state == self.State.Silent:
-                if self.__average_prob.is_upper_deviation(prob, self.__detect_threshold):
-                    # 疑似发言, 加入数据队列并转变状态
-                    self.__data_queue.put(data)
-                    self.__state = self.State.Voice
-                else:
-                    # 在底噪偏差范围内, 计入底噪, 数据入队，状态不变
-                    self.__average_prob.enqueue(prob)
+            if not self.__sentence_flag and prob > average_prob / self.__detect_threshold:
+                self.__sentence_flag = True
+                wave_data = b''
+            elif self.__sentence_flag and prob < average_prob * self.__detect_threshold:
+                self.__sentence_flag = False
+                self.__average_prob.set_average(prob)
+                file = self.save_waveform(wave_data)
+                self.__dst_queue.put((file, config.get_value(STRING.CONFIG_LANGUAGE)))
+                wave_data = b''
 
-                    while not self.__data_queue.empty():
-                        self.__data_queue.get()
-
-                    self.__data_queue.put(data)
-            else:
-                if self.__average_prob.is_upper_deviation(prob, self.__detect_threshold):
-                    # 疑似发言, 加入数据队列, 状态不变
-                    self.__data_queue.put(data)
-                else:
-                    # 在底噪偏差范围内, 计入底噪, 加入数据队列, 转变状态, 整合数据并输出
-                    self.__data_queue.put(data)
-                    self.__average_prob.enqueue(prob)
-
-                    blob = b''
-                    while not self.__data_queue.empty():
-                        blob += self.__data_queue.get()
-
-                    file = self.save_waveform(blob)
-                    self.__dst_queue.put((file, config.get_value(STRING.CONFIG_LANGUAGE)))
-
-                    self.__state = self.State.Silent
+            if self.__sentence_flag:
+                wave_data = wave_data + data
 
     def save_waveform(self, data: bytes):
         self.__index = self.__index + 1
