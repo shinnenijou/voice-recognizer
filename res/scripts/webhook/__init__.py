@@ -47,10 +47,18 @@ class WebhookSender(Thread):
                 time.sleep(config.get_int(STRING.CONFIG_UPDATE_INTERVAL) / 1000)
                 continue
 
-            text = self.__src_queue.get()
-            if text == '':
+            texts = []
+
+            while not self.__src_queue.empty():
+                text = self.__src_queue.get().strip()
+                if text != '':
+                    texts.append(text)
+
+            if len(texts) == 0:
                 continue
 
-            self.send(url, name, text)
+            msg = '\n'.join(texts)
+
+            self.send(url, name, msg)
 
         self.__session.close()
