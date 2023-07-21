@@ -54,5 +54,12 @@
     "update_files": {
       "res/scripts/utils/__init__.py": "M"
     }
+  },
+  "0.2.16": {
+    "version": "0.2.16",
+    "update_files": {
+      "res/scripts/managers/thread_manager.py": "M",
+      "res/scripts/webhook/__init__.py": "M"
+    }
   }
 }
