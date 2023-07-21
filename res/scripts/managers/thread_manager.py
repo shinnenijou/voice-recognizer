@@ -12,6 +12,7 @@ class ThreadManager:
         self.__templates = {}
         self.__threads = {}
         self.__args = {}
+        self.__queue_ref = []
 
     def is_running(self):
         return self.__running_flag.is_set()
@@ -30,6 +31,12 @@ class ThreadManager:
         self.__args[name] = kwargs
         self.__templates[name] = template
 
+        if 'dst_queue' in kwargs:
+            self.__queue_ref.append(kwargs.get('dst_queue'))
+
+        if 'src_queue' in kwargs:
+            self.__queue_ref.append(kwargs.get('src_queue'))
+
         return True
 
     def remove(self, name:str):
@@ -46,6 +53,10 @@ class ThreadManager:
     def start(self):
         if self.__running_flag.is_set():
             return False
+
+        for queue in self.__queue_ref:
+            while not queue.empty():
+                queue.get()
 
         for thread_name in self.__tasks:
             self.__threads[thread_name] = self.__templates[thread_name](self.__running_flag, **self.__args[thread_name])
@@ -77,6 +88,10 @@ class ThreadManager:
             if thread_name in self.__threads:
                 self.__threads[thread_name].join()
                 del self.__threads[thread_name]
+
+        for queue in self.__queue_ref:
+            while not queue.empty():
+                queue.get()
 
         return True
 
